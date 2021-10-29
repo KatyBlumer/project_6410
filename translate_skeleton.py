@@ -1,16 +1,23 @@
 import json
+import sys
 
-HARMONY_FILE = "/Users/katyblumer/Documents/harmony-1.2/mycode/x.hvm"
+HARMONY_FILE = str(sys.argv[1])
+print("parsing " + HARMONY_FILE)
 
 with open(HARMONY_FILE) as f:
     har_json = json.load(f)
-
-for line in har_json['code']:
-  print(parse_line(line))
-
 
 def parse_line(line):
     if line['op'] == 'Frame':
         return ""
     elif line['op'] == 'Push':
-        pass  # TODO
+        pass
+    else :
+        pass
+
+def main():
+    for line in har_json['code']:
+        print(parse_line(line))
+
+if __name__ == "__main__":
+    main()
