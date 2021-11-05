@@ -2,7 +2,7 @@
 TLC2 Version 2.16 of 31 December 2020 (rev: cdddf55)
 @!@!@ENDMSG 2262 @!@!@
 @!@!@STARTMSG 2187:0 @!@!@
-Running breadth-first search Model-Checking with fp 55 and seed -9186153292116461896 with 4 workers on 8 cores with 608MB heap and 1365MB offheap memory [pid: 7933] (Mac OS X 10.15.7 x86_64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+Running breadth-first search Model-Checking with fp 44 and seed -1317871546869770065 with 4 workers on 8 cores with 608MB heap and 1365MB offheap memory [pid: 7929] (Mac OS X 10.15.7 x86_64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
 @!@!@ENDMSG 2187 @!@!@
 @!@!@STARTMSG 2220:0 @!@!@
 Starting SANY...
@@ -27,22 +27,22 @@ Semantic processing of module MC
 SANY finished.
 @!@!@ENDMSG 2219 @!@!@
 @!@!@STARTMSG 2185:0 @!@!@
-Starting... (2021-11-04 21:38:30)
+Starting... (2021-11-04 21:37:35)
 @!@!@ENDMSG 2185 @!@!@
 @!@!@STARTMSG 2189:0 @!@!@
 Computing initial states...
 @!@!@ENDMSG 2189 @!@!@
 @!@!@STARTMSG 2190:0 @!@!@
-Finished computing initial states: 1 distinct state generated at 2021-11-04 21:38:35.
+Finished computing initial states: 1 distinct state generated at 2021-11-04 21:37:40.
 @!@!@ENDMSG 2190 @!@!@
 @!@!@STARTMSG 2193:0 @!@!@
 Model checking completed. No error has been found.
   Estimates of the probability that TLC did not check all reachable states
   because two distinct states had the same fingerprint:
-  calculated (optimistic):  val = 6.5E-19
+  calculated (optimistic):  val = 5.4E-19
 @!@!@ENDMSG 2193 @!@!@
 @!@!@STARTMSG 2201:0 @!@!@
-The coverage statistics at 2021-11-04 21:38:35
+The coverage statistics at 2021-11-04 21:37:40
 @!@!@ENDMSG 2201 @!@!@
 @!@!@STARTMSG 2773:0 @!@!@
 <Init line 8, col 1 to line 8, col 4 of module Test1>: 1:1
@@ -54,19 +54,19 @@ The coverage statistics at 2021-11-04 21:38:35
 <pc1 line 10, col 1 to line 10, col 8 of module Test1>: 2:2
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 10, col 16 to line 10, col 25 of module Test1: 14
+  line 10, col 16 to line 10, col 25 of module Test1: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 10, col 16 to line 10, col 18 of module Test1: 12
+  |line 10, col 16 to line 10, col 18 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 17, col 5 to line 17, col 27 of module Harmony: 14
+  line 17, col 5 to line 17, col 27 of module Harmony: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 17, col 5 to line 17, col 18 of module Harmony: 12
+  |line 17, col 5 to line 17, col 18 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 17, col 22 to line 17, col 27 of module Harmony: 12
+  |line 17, col 22 to line 17, col 27 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 18, col 5 to line 18, col 125 of module Harmony: 2
@@ -75,25 +75,25 @@ The coverage statistics at 2021-11-04 21:38:35
   line 19, col 5 to line 19, col 31 of module Harmony: 2
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 11, col 21 to line 11, col 23 of module Test1: 12
+  line 11, col 21 to line 11, col 23 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2772:0 @!@!@
 <pc2 line 13, col 1 to line 13, col 8 of module Test1>: 2:2
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 13, col 16 to line 13, col 25 of module Test1: 14
+  line 13, col 16 to line 13, col 25 of module Test1: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 13, col 16 to line 13, col 18 of module Test1: 12
+  |line 13, col 16 to line 13, col 18 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 29, col 5 to line 29, col 27 of module Harmony: 14
+  line 29, col 5 to line 29, col 27 of module Harmony: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 29, col 5 to line 29, col 18 of module Harmony: 12
+  |line 29, col 5 to line 29, col 18 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 29, col 22 to line 29, col 27 of module Harmony: 12
+  |line 29, col 22 to line 29, col 27 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 30, col 5 to line 30, col 89 of module Harmony: 2
@@ -120,25 +120,25 @@ The coverage statistics at 2021-11-04 21:38:35
   line 32, col 5 to line 32, col 20 of module Harmony: 2
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 14, col 22 to line 14, col 24 of module Test1: 12
+  line 14, col 22 to line 14, col 24 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2772:0 @!@!@
 <pc3 line 16, col 1 to line 16, col 8 of module Test1>: 2:2
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 16, col 16 to line 16, col 25 of module Test1: 14
+  line 16, col 16 to line 16, col 25 of module Test1: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 16, col 16 to line 16, col 18 of module Test1: 12
+  |line 16, col 16 to line 16, col 18 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 17, col 5 to line 17, col 27 of module Harmony: 14
+  line 17, col 5 to line 17, col 27 of module Harmony: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 17, col 5 to line 17, col 18 of module Harmony: 12
+  |line 17, col 5 to line 17, col 18 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 17, col 22 to line 17, col 27 of module Harmony: 12
+  |line 17, col 22 to line 17, col 27 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 18, col 5 to line 18, col 125 of module Harmony: 2
@@ -147,7 +147,7 @@ The coverage statistics at 2021-11-04 21:38:35
   line 19, col 5 to line 19, col 31 of module Harmony: 2
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 17, col 21 to line 17, col 23 of module Test1: 12
+  line 17, col 21 to line 17, col 23 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 17, col 25 to line 17, col 28 of module Test1: 2
@@ -156,19 +156,19 @@ The coverage statistics at 2021-11-04 21:38:35
 <pc4 line 19, col 1 to line 19, col 8 of module Test1>: 2:2
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 19, col 15 to line 19, col 25 of module Test1: 14
+  line 19, col 15 to line 19, col 25 of module Test1: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 19, col 15 to line 19, col 17 of module Test1: 12
+  |line 19, col 15 to line 19, col 17 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 29, col 5 to line 29, col 27 of module Harmony: 14
+  line 29, col 5 to line 29, col 27 of module Harmony: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 29, col 5 to line 29, col 18 of module Harmony: 12
+  |line 29, col 5 to line 29, col 18 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 29, col 22 to line 29, col 27 of module Harmony: 12
+  |line 29, col 22 to line 29, col 27 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 30, col 5 to line 30, col 89 of module Harmony: 2
@@ -195,43 +195,34 @@ The coverage statistics at 2021-11-04 21:38:35
   line 32, col 5 to line 32, col 20 of module Harmony: 2
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 20, col 22 to line 20, col 24 of module Test1: 12
+  line 20, col 22 to line 20, col 24 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2772:0 @!@!@
-<pc5 line 22, col 1 to line 22, col 8 of module Test1>: 2:2
+<pc5 line 22, col 1 to line 22, col 8 of module Test1>: 0:0
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 22, col 16 to line 22, col 26 of module Test1: 14
+  line 22, col 16 to line 22, col 26 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 22, col 16 to line 22, col 18 of module Test1: 12
+  line 35, col 5 to line 35, col 27 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 35, col 5 to line 35, col 27 of module Harmony: 14
+  line 36, col 5 to line 36, col 48 of module Harmony: 0
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 35, col 5 to line 35, col 18 of module Harmony: 12
+  line 37, col 5 to line 37, col 31 of module Harmony: 0
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 35, col 22 to line 35, col 27 of module Harmony: 12
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 36, col 5 to line 36, col 48 of module Harmony: 2
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 37, col 5 to line 37, col 31 of module Harmony: 2
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 23, col 21 to line 23, col 23 of module Test1: 12
+  line 23, col 21 to line 23, col 23 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2772:0 @!@!@
 <pc6 line 25, col 1 to line 25, col 8 of module Test1>: 1:2
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 25, col 16 to line 25, col 25 of module Test1: 14
+  line 25, col 16 to line 25, col 25 of module Test1: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 25, col 16 to line 25, col 18 of module Test1: 12
+  |line 25, col 16 to line 25, col 18 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 4, col 69 to line 4, col 74 of module Test1: 2
@@ -240,16 +231,16 @@ The coverage statistics at 2021-11-04 21:38:35
   line 4, col 52 to line 4, col 57 of module Test1: 4
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 4, col 34 to line 4, col 39 of module Test1: 103
+  line 4, col 34 to line 4, col 39 of module Test1: 89
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 40, col 5 to line 40, col 28 of module Harmony: 14
+  line 40, col 5 to line 40, col 28 of module Harmony: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 40, col 5 to line 40, col 19 of module Harmony: 12
+  |line 40, col 5 to line 40, col 19 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 40, col 23 to line 40, col 28 of module Harmony: 12
+  |line 40, col 23 to line 40, col 28 of module Harmony: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
   line 41, col 5 to line 41, col 140 of module Harmony: 2
@@ -261,23 +252,23 @@ The coverage statistics at 2021-11-04 21:38:35
   line 43, col 5 to line 43, col 20 of module Harmony: 2
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 26, col 22 to line 26, col 24 of module Test1: 12
+  line 26, col 22 to line 26, col 24 of module Test1: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2202:0 @!@!@
 End of statistics.
 @!@!@ENDMSG 2202 @!@!@
 @!@!@STARTMSG 2200:0 @!@!@
-Progress(12) at 2021-11-04 21:38:35: 13 states generated (136 s/min), 12 distinct states found (126 ds/min), 0 states left on queue.
+Progress(10) at 2021-11-04 21:37:40: 11 states generated (115 s/min), 10 distinct states found (105 ds/min), 0 states left on queue.
 @!@!@ENDMSG 2200 @!@!@
 @!@!@STARTMSG 2199:0 @!@!@
-13 states generated, 12 distinct states found, 0 states left on queue.
+11 states generated, 10 distinct states found, 0 states left on queue.
 @!@!@ENDMSG 2199 @!@!@
 @!@!@STARTMSG 2194:0 @!@!@
-The depth of the complete state graph search is 12.
+The depth of the complete state graph search is 10.
 @!@!@ENDMSG 2194 @!@!@
 @!@!@STARTMSG 2268:0 @!@!@
 The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 1 and the 95th percentile is 1).
 @!@!@ENDMSG 2268 @!@!@
 @!@!@STARTMSG 2186:0 @!@!@
-Finished in 5718ms at (2021-11-04 21:38:35)
+Finished in 5720ms at (2021-11-04 21:37:40)
 @!@!@ENDMSG 2186 @!@!@
