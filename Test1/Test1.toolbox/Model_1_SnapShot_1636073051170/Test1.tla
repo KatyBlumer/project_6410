@@ -30,5 +30,5 @@ Next == pc1("c0") \/ pc2("c0") \/pc3("c0") \/ pc4("c0") \/ pc5("c0")  \/ pc6("c0
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
-\* Last modified Thu Nov 04 21:38:24 EDT 2021 by arielkellison
+\* Last modified Thu Nov 04 20:44:01 EDT 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison
