@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Test1</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>toolbox.builder.TLAParserBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>toolbox.natures.TLANature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>Harmony.tla</name>
+			<type>1</type>
+			<location>/Users/arielkellison/.tlaplus/Test1/Harmony.tla</location>
+		</link>
+		<link>
+			<name>Test1.tla</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Test1.tla</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
