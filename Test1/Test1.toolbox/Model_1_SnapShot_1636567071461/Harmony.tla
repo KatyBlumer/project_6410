@@ -4,7 +4,7 @@ EXTENDS Integers, Sequences
 VARIABLE CTXBAG, SHARED, CTXSET
 
 NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE val] 
-NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
+NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE "FALSE"] 
 NMapReturn(var,map) == [x \in ((DOMAIN map) \ {var}) |-> map[x]] 
 RECURSIVE NTail (_, _)
 RECURSIVE NHead (_, _)
@@ -67,12 +67,20 @@ DelVar(ctx,var,PC) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
  /\ UNCHANGED <<SHARED,CTXSET>>  
  
-(* take top of the context's stack and assign it to Frame instruction arguments args *)
-(* TODO want to do store var on possibly a tuple, only works for single var now *) 
-Frame(ctx,args,PC) == 
- /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(args,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
- /\ UNCHANGED <<SHARED,CTXSET>>
+Frame(ctx,args,PC) == (* want to do store var on possibly a tuple, only works for single var now *)
+    /\ IF PC = 0 THEN /\ CTXBAG[ctx].pc = PC
+                      /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1] 
+                      /\ UNCHANGED <<SHARED,CTXSET>> 
+                 ELSE /\ StoreVar(ctx,args,PC)
+
+    
+    
+    (* args are a tuple in ctx's stack *)
+ (*/\ Head(CTXBAG[ctx].stack) = args (* init frame has empty tuple *)  this is a precondition*)
+(* otherwise, we take whatever is on the top of the stack and we assign it to the args in frame*)
+(*i.e., frame needs to contain an arg assignment STORE *)
+ (*/\ increment pc by one
+ /\ UNCHANGED <<SHARED,CTXSET>> *)
  
 Frame0(ctx,args,PC) == 
   /\ CTXBAG[ctx].pc = PC
@@ -85,9 +93,25 @@ Return(ctx,PC) ==
  /\ CTXBAG' = NMapReturn(ctx,CTXBAG) (* remove the context from the context bag *)
  /\ CTXSET' = CTXSET \union {ctx} (* add context name back to the ctx set *)
  /\ UNCHANGED <<SHARED>>
+(* FOR A SPAWNED FUNCTION CALL *)
+(* precondition is that stack of ctx is empty *)
+(* remove it from the contextbag *)
+(* FOR A REGULAR FUNCTION CALL *)
+(* there will be an APPLY instruction prior to return, followed by either POP or STORE*)
+(* APPLY : pushes PC + 1 to the stack and pops two things from the stack : a program counter 
+and the args to function call*)
 
+(*try to write a Harmony program of Peterson's alg w/o subtraction ,
+has three vars (flag0,flag1, return); then we can model check it,
+does it implement mutual exclusion*)
+(*in some sense we are creating a semantics for the machine code, don't have a 
+semantics for the programming language*) 
+
+
+ (* atomics in Harmony; bit associated with ctxts; if a thread is in atomic mode, then only that 
+ thread can make the next step ; would say forall contexts in the executing contexts *)
 
 =============================================================================
 \* Modification History
-\* Last modified Wed Nov 10 13:53:21 EST 2021 by arielkellison
+\* Last modified Wed Nov 10 12:57:37 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
