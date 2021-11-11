@@ -1,0 +1,31 @@
+{
+  "labels": {
+    "__end__": "7"
+  },
+  "code": [
+    { "op": "Frame", "name": "__init__", "args": "()" },
+    { "op": "Push", "value": { "type": "int", "value": "3" } },
+    { "op": "Store", "value": [{ "type": "atom", "value": "a" }] },
+    { "op": "Push", "value": { "type": "bool", "value": "False" } },
+    { "op": "Store", "value": [{ "type": "atom", "value": "b" }] },
+    { "op": "Return" },
+    { "op": "DelVar", "value": "result" }
+  ],
+  "pretty": [
+    ["Frame __init__ ()","start of method __init__"],
+    ["Push 3","push constant 3"],
+    ["Store a","pop a value and store it in shared variable a"],
+    ["Push False","push constant False"],
+    ["Store b","pop a value and store it in shared variable b"],
+    ["Return","restore caller method state and push result"],
+    ["DelVar result","delete method variable result"]
+  ],
+  "locations": {
+    "1": { "file": "Test2.hny", "line": "1", "code": "a = 3" },
+    "2": { "file": "Test2.hny", "line": "1", "code": "a = 3" },
+    "3": { "file": "Test2.hny", "line": "2", "code": "b = False" },
+    "4": { "file": "Test2.hny", "line": "2", "code": "b = False" },
+    "5": { "file": "Test2.hny", "line": "2", "code": "b = False" },
+    "6": { "file": "Test2.hny", "line": "2", "code": "b = False" }
+  }
+}
