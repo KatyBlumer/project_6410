@@ -1,0 +1,377 @@
+@!@!@STARTMSG 2262:0 @!@!@
+TLC2 Version 2.16 of 31 December 2020 (rev: cdddf55)
+@!@!@ENDMSG 2262 @!@!@
+@!@!@STARTMSG 2187:0 @!@!@
+Running breadth-first search Model-Checking with fp 55 and seed -8019849206687108613 with 4 workers on 8 cores with 608MB heap and 1365MB offheap memory [pid: 13875] (Mac OS X 10.15.7 x86_64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+@!@!@ENDMSG 2187 @!@!@
+@!@!@STARTMSG 2220:0 @!@!@
+Starting SANY...
+@!@!@ENDMSG 2220 @!@!@
+Parsing file /Users/arielkellison/.tlaplus/Test1/Test1.toolbox/Model_3/MC.tla
+Parsing file /Users/arielkellison/.tlaplus/Test1/Test1.toolbox/Model_3/Test1.tla
+Parsing file /private/var/folders/w6/2w39dzrx1cdgypqh9z6037800000gn/T/AppTranslocation/C9C59834-AAF7-4E95-A093-077B0266817B/d/TLA+ Toolbox.app/Contents/Eclipse/plugins/org.lamport.tlatools_1.0.0.202012311918/tla2sany/StandardModules/TLC.tla
+Parsing file /Users/arielkellison/.tlaplus/Test1/Test1.toolbox/Model_3/Harmony.tla
+Parsing file /private/var/folders/w6/2w39dzrx1cdgypqh9z6037800000gn/T/AppTranslocation/C9C59834-AAF7-4E95-A093-077B0266817B/d/TLA+ Toolbox.app/Contents/Eclipse/plugins/org.lamport.tlatools_1.0.0.202012311918/tla2sany/StandardModules/Integers.tla
+Parsing file /private/var/folders/w6/2w39dzrx1cdgypqh9z6037800000gn/T/AppTranslocation/C9C59834-AAF7-4E95-A093-077B0266817B/d/TLA+ Toolbox.app/Contents/Eclipse/plugins/org.lamport.tlatools_1.0.0.202012311918/tla2sany/StandardModules/Sequences.tla
+Parsing file /private/var/folders/w6/2w39dzrx1cdgypqh9z6037800000gn/T/AppTranslocation/C9C59834-AAF7-4E95-A093-077B0266817B/d/TLA+ Toolbox.app/Contents/Eclipse/plugins/org.lamport.tlatools_1.0.0.202012311918/tla2sany/StandardModules/Naturals.tla
+Parsing file /private/var/folders/w6/2w39dzrx1cdgypqh9z6037800000gn/T/AppTranslocation/C9C59834-AAF7-4E95-A093-077B0266817B/d/TLA+ Toolbox.app/Contents/Eclipse/plugins/org.lamport.tlatools_1.0.0.202012311918/tla2sany/StandardModules/FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module Harmony
+Semantic processing of module Test1
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module MC
+@!@!@STARTMSG 2219:0 @!@!@
+SANY finished.
+@!@!@ENDMSG 2219 @!@!@
+@!@!@STARTMSG 2185:0 @!@!@
+Starting... (2021-11-10 19:49:10)
+@!@!@ENDMSG 2185 @!@!@
+@!@!@STARTMSG 2189:0 @!@!@
+Computing initial states...
+@!@!@ENDMSG 2189 @!@!@
+@!@!@STARTMSG 2190:0 @!@!@
+Finished computing initial states: 1 distinct state generated at 2021-11-10 19:49:16.
+@!@!@ENDMSG 2190 @!@!@
+@!@!@STARTMSG 2184:1 @!@!@
+Attempted to apply Tail to the empty sequence.
+@!@!@ENDMSG 2184 @!@!@
+@!@!@STARTMSG 2121:1 @!@!@
+The behavior up to this point is:
+@!@!@ENDMSG 2121 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+1: <Initial predicate>
+/\ CTXBAG = [ c0 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<<<>>>>, pc |-> 0],
+  c1 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<<<>>>>, pc |-> 0] ]
+/\ SHARED = [FALSE |-> FALSE]
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+2: <pc0 line 19, col 13 to line 19, col 33 of module Test1>
+/\ CTXBAG = [ c0 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<<<>>>>, pc |-> 0],
+  c1 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<<<>>>>, pc |-> 1] ]
+/\ SHARED = [FALSE |-> FALSE]
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+3: <pc1 line 22, col 13 to line 22, col 32 of module Test1>
+/\ CTXBAG = [ c0 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<<<>>>>, pc |-> 0],
+  c1 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<FALSE, <<>>>>, pc |-> 2] ]
+/\ SHARED = [FALSE |-> FALSE]
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+4: <pc2 line 25, col 13 to line 25, col 31 of module Test1>
+/\ CTXBAG = [ c0 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<>>, pc |-> 3],
+  c1 |-> [vars |-> [FALSE |-> FALSE], stack |-> <<FALSE, <<>>>>, pc |-> 2] ]
+/\ SHARED = [c |-> <<>>]
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2103:1 @!@!@
+The error occurred when TLC was evaluating the nested
+expressions at the following positions:
+0. Line 25, column 13 to line 25, column 31 in Test1
+1. Line 25, column 16 to line 25, column 31 in Test1
+2. Line 4, column 1 to line 4, column 57 in Test1
+3. Line 35, column 2 to line 37, column 54 in Harmony
+4. Line 35, column 5 to line 35, column 47 in Harmony
+5. Line 35, column 30 to line 35, column 47 in Harmony
+6. Line 36, column 5 to line 36, column 88 in Harmony
+7. Line 36, column 15 to line 36, column 88 in Harmony
+8. Line 36, column 65 to line 36, column 87 in Harmony
+
+
+@!@!@ENDMSG 2103 @!@!@
+@!@!@STARTMSG 2201:0 @!@!@
+The coverage statistics at 2021-11-10 19:49:16
+@!@!@ENDMSG 2201 @!@!@
+@!@!@STARTMSG 2773:0 @!@!@
+<Init line 8, col 1 to line 8, col 4 of module Test1>: 2:2
+@!@!@ENDMSG 2773 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 8, col 9 to line 8, col 19 of module Test1: 2
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc0 line 18, col 1 to line 18, col 8 of module Test1>: 3:14
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 78, col 6 to line 78, col 24 of module Harmony: 61
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 78, col 6 to line 78, col 19 of module Harmony: 47
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 78, col 23 to line 78, col 24 of module Harmony: 47
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 79, col 6 to line 79, col 49 of module Harmony: 14
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 80, col 5 to line 80, col 35 of module Harmony: 14
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 19, col 23 to line 19, col 25 of module Test1: 47
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc1 line 21, col 1 to line 21, col 8 of module Test1>: 5:10
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 23, col 5 to line 23, col 23 of module Harmony: 56
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 23, col 5 to line 23, col 18 of module Harmony: 46
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 23, col 22 to line 23, col 23 of module Harmony: 46
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 24, col 5 to line 24, col 93 of module Harmony: 10
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 25, col 5 to line 25, col 35 of module Harmony: 10
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 22, col 21 to line 22, col 23 of module Test1: 46
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 22, col 25 to line 22, col 29 of module Test1: 10
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc2 line 24, col 1 to line 24, col 8 of module Test1>: 12:18
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 30 to line 35, col 47 of module Harmony: 107
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 35, col 30 to line 35, col 42 of module Harmony: 89
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 35, col 46 to line 35, col 47 of module Harmony: 89
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 15 to line 35, col 27 of module Harmony: 45
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 36, col 5 to line 36, col 88 of module Harmony: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 36, col 15 to line 36, col 88 of module Harmony: 21
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 37, col 5 to line 37, col 54 of module Harmony: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 37, col 15 to line 37, col 54 of module Harmony: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2775:0 @!@!@
+  ||line 6, col 23 to line 6, col 114 of module Harmony: 18:18
+@!@!@ENDMSG 2775 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  ||line 37, col 20 to line 37, col 22 of module Harmony: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  ||line 37, col 24 to line 37, col 46 of module Harmony: 13
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  ||line 37, col 48 to line 37, col 53 of module Harmony: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 25, col 22 to line 25, col 24 of module Test1: 19
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc3 line 27, col 1 to line 27, col 8 of module Test1>: 8:8
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 41, col 5 to line 41, col 23 of module Harmony: 49
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 41, col 5 to line 41, col 18 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 41, col 22 to line 41, col 23 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 42, col 5 to line 42, col 48 of module Harmony: 8
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 43, col 5 to line 43, col 35 of module Harmony: 8
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 28, col 21 to line 28, col 23 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc4 line 30, col 1 to line 30, col 8 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 73, col 30 to line 73, col 47 of module Harmony: 82
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 73, col 15 to line 73, col 27 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 74, col 5 to line 74, col 155 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 75, col 5 to line 75, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc5 line 33, col 1 to line 33, col 8 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 54, col 30 to line 54, col 47 of module Harmony: 82
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 54, col 15 to line 54, col 27 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 55, col 5 to line 55, col 116 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 56, col 5 to line 56, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc6 line 36, col 1 to line 36, col 8 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 66, col 30 to line 66, col 47 of module Harmony: 82
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 66, col 15 to line 66, col 27 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 67, col 5 to line 67, col 91 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 68, col 5 to line 68, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc7 line 39, col 1 to line 39, col 8 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 30 to line 35, col 47 of module Harmony: 82
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 15 to line 35, col 27 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 36, col 5 to line 36, col 88 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 37, col 5 to line 37, col 54 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc8 line 42, col 1 to line 42, col 8 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 91, col 30 to line 91, col 47 of module Harmony: 82
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 91, col 15 to line 91, col 27 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 92, col 5 to line 92, col 36 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 94, col 5 to line 94, col 24 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc9 line 45, col 1 to line 45, col 8 of module Test1>: 3:3
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 23, col 5 to line 23, col 23 of module Harmony: 44
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 23, col 5 to line 23, col 18 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  |line 23, col 22 to line 23, col 23 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 24, col 5 to line 24, col 93 of module Harmony: 3
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 25, col 5 to line 25, col 35 of module Harmony: 3
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 46, col 21 to line 46, col 23 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc10 line 48, col 1 to line 48, col 9 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 47, col 5 to line 47, col 23 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 49, col 5 to line 49, col 106 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 50, col 5 to line 50, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 49, col 22 to line 49, col 24 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc11 line 51, col 1 to line 51, col 9 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 23, col 5 to line 23, col 23 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 24, col 5 to line 24, col 93 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 25, col 5 to line 25, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 52, col 22 to line 52, col 24 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc12 line 54, col 1 to line 54, col 9 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 59, col 5 to line 59, col 24 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 60, col 5 to line 60, col 169 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 62, col 5 to line 62, col 20 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 55, col 23 to line 55, col 25 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<pc13 line 57, col 1 to line 57, col 9 of module Test1>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 4, col 52 to line 4, col 57 of module Test1: 18
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 4, col 34 to line 4, col 39 of module Test1: 1191
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 83, col 8 to line 83, col 26 of module Harmony: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 84, col 9 to line 84, col 35 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 85, col 5 to line 85, col 140 of module Harmony: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 58, col 26 to line 58, col 28 of module Test1: 41
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2202:0 @!@!@
+End of statistics.
+@!@!@ENDMSG 2202 @!@!@
+@!@!@STARTMSG 2200:0 @!@!@
+Progress(7) at 2021-11-10 19:49:16: 48 states generated (500 s/min), 32 distinct states found (333 ds/min), 11 states left on queue.
+@!@!@ENDMSG 2200 @!@!@
+@!@!@STARTMSG 2199:0 @!@!@
+48 states generated, 32 distinct states found, 11 states left on queue.
+@!@!@ENDMSG 2199 @!@!@
+@!@!@STARTMSG 2186:0 @!@!@
+Finished in 5763ms at (2021-11-10 19:49:16)
+@!@!@ENDMSG 2186 @!@!@

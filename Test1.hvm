@@ -1,31 +1,55 @@
 {
   "labels": {
-    "__end__": "7"
+    "__end__": "15"
   },
   "code": [
     { "op": "Frame", "name": "__init__", "args": "()" },
-    { "op": "Push", "value": { "type": "int", "value": "3" } },
-    { "op": "Store", "value": [{ "type": "atom", "value": "a" }] },
     { "op": "Push", "value": { "type": "bool", "value": "False" } },
-    { "op": "Store", "value": [{ "type": "atom", "value": "b" }] },
+    { "op": "Store", "value": [{ "type": "atom", "value": "c" }] },
+    { "op": "Jump", "pc": "9" },
+    { "op": "Frame", "name": "thread_assign1", "args": "arg1" },
+    { "op": "LoadVar", "value": "arg1" },
+    { "op": "DelVar", "value": "arg1" },
+    { "op": "Store", "value": [{ "type": "atom", "value": "a" }] },
+    { "op": "Return" },
+    { "op": "Push", "value": { "type": "pc", "value": "4" } },
+    { "op": "Load", "value": [{ "type": "atom", "value": "c" }] },
+    { "op": "Push", "value": { "type": "dict", "value": [] } },
+    { "op": "Spawn", "eternal": "False" },
     { "op": "Return" },
     { "op": "DelVar", "value": "result" }
   ],
   "pretty": [
     ["Frame __init__ ()","start of method __init__"],
-    ["Push 3","push constant 3"],
-    ["Store a","pop a value and store it in shared variable a"],
     ["Push False","push constant False"],
-    ["Store b","pop a value and store it in shared variable b"],
+    ["Store c","pop a value and store it in shared variable c"],
+    ["Jump 9","set program counter to 9"],
+    ["Frame thread_assign1 arg1","start of method thread_assign1"],
+    ["LoadVar arg1","push the value of arg1"],
+    ["DelVar arg1","delete method variable arg1"],
+    ["Store a","pop a value and store it in shared variable a"],
+    ["Return","restore caller method state and push result"],
+    ["Push PC(4)","push constant PC(4)"],
+    ["Load c","push value of shared variable c"],
+    ["Push ()","push constant ()"],
+    ["Spawn","pop thread-local state, argument, and pc and spawn a new thread"],
     ["Return","restore caller method state and push result"],
     ["DelVar result","delete method variable result"]
   ],
   "locations": {
-    "1": { "file": "Test1.hny", "line": "1", "code": "a = 3" },
-    "2": { "file": "Test1.hny", "line": "1", "code": "a = 3" },
-    "3": { "file": "Test1.hny", "line": "2", "code": "b = False" },
-    "4": { "file": "Test1.hny", "line": "2", "code": "b = False" },
-    "5": { "file": "Test1.hny", "line": "2", "code": "b = False" },
-    "6": { "file": "Test1.hny", "line": "2", "code": "b = False" }
+    "1": { "file": "Test1.hny", "line": "1", "code": "c = False" },
+    "2": { "file": "Test1.hny", "line": "1", "code": "c = False" },
+    "3": { "file": "Test1.hny", "line": "3", "code": "def thread_assign1(arg1):" },
+    "4": { "file": "Test1.hny", "line": "3", "code": "def thread_assign1(arg1):" },
+    "5": { "file": "Test1.hny", "line": "4", "code": "    a = arg1" },
+    "6": { "file": "Test1.hny", "line": "4", "code": "    a = arg1" },
+    "7": { "file": "Test1.hny", "line": "4", "code": "    a = arg1" },
+    "8": { "file": "Test1.hny", "line": "4", "code": "    a = arg1" },
+    "9": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" },
+    "10": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" },
+    "11": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" },
+    "12": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" },
+    "13": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" },
+    "14": { "file": "Test1.hny", "line": "6", "code": "spawn thread_assign1(c)" }
   }
 }
