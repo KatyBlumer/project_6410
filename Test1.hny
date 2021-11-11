@@ -1,2 +1,6 @@
-a = 3
-b = False
+c = False
+
+def thread_assign1(arg1):
+  a = arg1
+
+spawn thread_assign1(c)
