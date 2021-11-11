@@ -5,3 +5,5 @@ Test1/Test1.toolbox/*_SnapShot*
 Test1/Test1.toolbox/Model_*/*
 !Test1/Test1.toolbox/Model_*/MC.cfg
 !Test1/Test1.toolbox/Model_*/MC.tla
+
+Test1/Test1.toolbox/.project
