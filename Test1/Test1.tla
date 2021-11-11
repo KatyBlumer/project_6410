@@ -33,7 +33,7 @@ pc11(ctx) == /\ Push(ctx,<<>>,11)
             
 pc12(ctx) == /\ Spawn(ctx, CHOOSE x \in (DOMAIN CTXBAG \ {ctx}): TRUE, 12)
             
-pc13(ctx) == /\ FrameEnd(ctx,13)
+pc13(ctx) == /\ ReturnEnd(ctx,13)
 
 Next == pc0("c0") \/ pc1("c0") \/ pc2("c0") \/ pc3("c0") 
 \/ pc4("c1") \/ pc5("c1") \/ pc6("c1") \/ pc7("c1") \/ pc8("c1") 
@@ -42,5 +42,5 @@ Next == pc0("c0") \/ pc1("c0") \/ pc2("c0") \/ pc3("c0")
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
-\* Last modified Wed Nov 10 20:01:26 EST 2021 by arielkellison
+\* Last modified Wed Nov 10 20:10:57 EST 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison
