@@ -1,7 +1,7 @@
 ------------------------------ MODULE Harmony ------------------------------
 EXTENDS Integers, Sequences
 
-VARIABLE CTXBAG, SHARED
+VARIABLE CTXBAG, SHARED, CTXSET
 
 (* some helper functions *)
 (* add var with val to map *)
@@ -21,94 +21,89 @@ SpawnTail(ctx)    == NTail(3,CTXBAG[ctx].stack)
 (* empty record *)
 e_rec == [FALSE |-> FALSE] 
 (* a new context *)
-new_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> FALSE, spn |-> FALSE]
-(* initial context is marked as spawned;
- return checks if context is either in
- a "spawn state" or "applied state" *)
-init_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> TRUE, spn |-> TRUE]
+new_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> FALSE]
 
 (* Harmony Initial State *)
-HarmonyInit == (* global variable *)
+HarmonyInit == (* global variables *)
  /\ SHARED = e_rec (* start empty *) 
- /\ CTXBAG = [c0 |-> init_ctx, c1 |-> new_ctx, c2 |-> new_ctx]
+ /\ CTXBAG = [c0 |-> new_ctx, c1 |-> new_ctx, c2 |-> new_ctx]
+ /\ CTXSET = {"c0","c1","c2","c3","c4","c5","c6","c7","c8","c9"}
             
 (* push val onto head of ctx stack *)
 Push(ctx,val,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
     
 (* thread store *)
 StoreVar(ctx,var,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(var,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
 (* shared store *)
 Store(ctx,var,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
  /\ SHARED' = NMap(var,Head(CTXBAG[ctx].stack),SHARED)
+ /\ UNCHANGED CTXSET
                   
 Jump(ctx,PC,PC_new) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC_new]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
 (* push the value of a shared variable onto the context stack *)
 Load(ctx,var_name,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  (* push the value of a shared variable onto the stack *) 
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
 (* push the value of a thread variable onto the stack *)
 LoadVar(ctx,var_name,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
 Spawn(ctxa,PC) ==
  /\ CTXBAG[ctxa].pc = PC
- /\ CTXBAG[ctxa].active = TRUE
  /\ LET SpStk == SpawnHead(ctxa) IN
     LET ctxb == CHOOSE x \in DOMAIN CTXBAG : CTXBAG[x].active = FALSE IN
-    /\ CTXBAG' = [CTXBAG EXCEPT ![ctxa].pc = PC + 1, ![ctxa].stack = SpawnTail(ctxa), ![ctxb].pc = Head(SpStk), ![ctxb].stack = Tail(SpStk), ![ctxb].active = TRUE, ![ctxb].spn = TRUE]
- /\ UNCHANGED SHARED
+    /\ CTXBAG' = [CTXBAG EXCEPT ![ctxa].pc = PC + 1, ![ctxa].stack = SpawnTail(ctxa), ![ctxb].pc = Head(SpStk), ![ctxb].stack = Tail(SpStk), ![ctxb].active = TRUE]
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
  (* delete thread variable var*)
 DelVar(ctx,var,PC) == 
- /\ CTXBAG[ctx].pc = PC 
- /\ CTXBAG[ctx].active = TRUE
+ /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
  
 (* take top of the context's stack and assign it to Frame instruction arguments args *)
 (* TODO want to do store var on possibly a tuple, only works for single var now *) 
 Frame(ctx,args,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
- /\ CTXBAG[ctx].spn = TRUE 
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(args,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars)]
- /\ UNCHANGED SHARED
+ /\ UNCHANGED <<SHARED,CTXSET>>
+ 
+Frame0(ctx) == 
+ /\ CTXBAG[ctx].pc = 0
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = 1, ![ctx].active = TRUE]
+ /\ UNCHANGED <<SHARED,CTXSET>>
   
+ReturnEnd(ctx,PC) == 
+ /\ CTXBAG[ctx].pc = PC
+ /\ SHARED' = e_rec
+ /\ CTXBAG' = e_rec
+ /\ UNCHANGED <<CTXSET>>
+ 
 Return(ctx,PC) == 
  /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
- /\ IF CTXBAG[ctx].spn = TRUE THEN
-    /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].active = FALSE] 
-    ELSE 
-    /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = Head(CTXBAG[ctx].stack), ![ctx].stack = Tail(CTXBAG[ctx].stack)]
- /\ UNCHANGED SHARED
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].active = FALSE] 
+ /\ UNCHANGED <<SHARED,CTXSET>>
 
 
 =============================================================================
 \* Modification History
-\* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
+\* Last modified Mon Nov 15 21:33:15 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison

@@ -7,7 +7,7 @@ vars == << CTXBAG, SHARED>>
  
 Init == HarmonyInit
       
-pc0(ctx) == /\ Frame(ctx,"INIT",0)
+pc0(ctx) == /\ Frame(ctx,FALSE,0)
             
 pc1(ctx) == /\ Push(ctx,FALSE,1)
             
@@ -45,5 +45,5 @@ Next == (\E self \in {"c0", "c1"}: proc(self))
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
-\* Last modified Thu Nov 18 16:18:31 EST 2021 by arielkellison
+\* Last modified Thu Nov 18 16:16:22 EST 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison

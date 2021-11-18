@@ -5,7 +5,7 @@ VARIABLE CTXBAG, SHARED
 
 (* some helper functions *)
 (* add var with val to map *)
-NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE val] 
+NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ FALSE |-> IF x \in DOMAIN map THEN map[x] ELSE val] 
 (* remove var from map, until empty map, i.e., FALSE |-> FALSE*)
 NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
 (* remove var from map *)
@@ -110,5 +110,5 @@ Return(ctx,PC) ==
 
 =============================================================================
 \* Modification History
-\* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
+\* Last modified Thu Nov 18 16:24:06 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison

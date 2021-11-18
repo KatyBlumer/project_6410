@@ -1,13 +1,13 @@
 ------------------------------- MODULE Test1 -------------------------------
-VARIABLE CTXBAG, SHARED
+VARIABLE CTXBAG, SHARED, CTXSET
 
-INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED
+INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, CTXSET <- CTXSET
 
-vars == << CTXBAG, SHARED>>
+vars == << CTXBAG, SHARED, CTXSET>>
  
 Init == HarmonyInit
       
-pc0(ctx) == /\ Frame(ctx,"INIT",0)
+pc0(ctx) == /\ Frame0(ctx)
             
 pc1(ctx) == /\ Push(ctx,FALSE,1)
             
@@ -32,6 +32,7 @@ pc10(ctx) == /\ Load(ctx,"c",10)
 pc11(ctx) == /\ Push(ctx,<<>>,11)
             
 pc12(ctx) == /\ Spawn(ctx, 12)
+                /\ Return(ctx,12)
             
 pc13(ctx) == /\ Return(ctx,13)
 
@@ -40,10 +41,10 @@ proc(self) == pc0(self) \/ pc1(self) \/ pc2(self) \/ pc3(self)
     \/ pc9(self) \/ pc10(self) \/ pc11(self) \/ pc12(self)
     \/ pc13(self)
 
-Next == (\E self \in {"c0", "c1"}: proc(self))
+Next == (\E self \in {"c0","c1"}: proc(self))
     
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
-\* Last modified Thu Nov 18 16:18:31 EST 2021 by arielkellison
+\* Last modified Mon Nov 15 21:46:44 EST 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison
