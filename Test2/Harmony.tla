@@ -4,18 +4,25 @@ EXTENDS Integers, Sequences
 VARIABLE CTXBAG, SHARED
 
 (* some helper functions *)
+
+
 (* add var with val to map *)
-NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE val] 
+NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x = var THEN val ELSE map[x]] 
 (* remove var from map, until empty map, i.e., FALSE |-> FALSE*)
 NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
 (* remove var from map *)
 NMapReturn(var,map) == [x \in ((DOMAIN map) \ {var}) |-> map[x]] 
 RECURSIVE NTail (_, _)
 RECURSIVE NHead (_, _)
+RECURSIVE AddMult (_, _, _)
+AddMult(var_tup, val_tup, map) == IF Len(var_tup) = 1 THEN [x \in ((DOMAIN map) \union {Head(var_tup)}) \ {"FALSE"} |-> IF x = Head(var_tup) THEN Head(val_tup) ELSE map[x]]
+                                     ELSE [x \in ((DOMAIN AddMult(Tail(var_tup), Tail(val_tup), map)) \union {Head(var_tup)}) \ {"FALSE"} |-> IF x = Head(var_tup) THEN Head(val_tup) ELSE AddMult(Tail(var_tup), Tail(val_tup), map)[x]]
+
 (* the last n elements of the list *)
 NTail(n,tup)      == IF n = 1 THEN Tail(tup) ELSE NTail(n-1,Tail(tup))  
 (* the first n elements of a tup *)
 NHead(n,tup)      == IF n = 1 THEN <<Head(tup)>> ELSE NHead(n-1,Tail(tup)) \o <<Head(tup)>>
+(* nth element of a tup *)
 SpawnHead(ctx)    == NHead(3,CTXBAG[ctx].stack)    
 SpawnTail(ctx)    == NTail(3,CTXBAG[ctx].stack)
 (* empty record *)
@@ -95,7 +102,7 @@ Frame(ctx,args,PC) ==
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG[ctx].spn = TRUE 
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(args,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars)]
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
  /\ UNCHANGED SHARED
   
 Return(ctx,PC) == 
@@ -110,5 +117,6 @@ Return(ctx,PC) ==
 
 =============================================================================
 \* Modification History
+\* Last modified Mon Nov 29 22:50:11 EST 2021 by noah
 \* Last modified Thu Nov 18 17:01:53 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison

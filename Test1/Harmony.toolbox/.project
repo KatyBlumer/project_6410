@@ -20,5 +20,10 @@
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Harmony.tla</locationURI>
 		</link>
+		<link>
+			<name>Test1.tla</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Test1.tla</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

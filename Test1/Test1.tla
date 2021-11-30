@@ -7,7 +7,7 @@ vars == << CTXBAG, SHARED>>
  
 Init == HarmonyInit
       
-pc0(ctx) == /\ Frame(ctx,"INIT",0)
+pc0(ctx) == /\ Frame(ctx,<<"INIT">>,0)
             
 pc1(ctx) == /\ Push(ctx,FALSE,1)
             
@@ -15,7 +15,7 @@ pc2(ctx) == /\ Store(ctx,"c",2)
            
 pc3(ctx) == /\ Jump(ctx,3,9) 
 
-pc4(ctx) == /\ Frame(ctx,"arg1",4)
+pc4(ctx) == /\ Frame(ctx,<<"arg1", "arg2">>,4)
 
 pc5(ctx) == /\ LoadVar(ctx,"arg1",5)
           
@@ -45,5 +45,6 @@ Next == (\E self \in {"c0", "c1"}: proc(self))
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
+\* Last modified Mon Nov 29 22:38:19 EST 2021 by noah
 \* Last modified Thu Nov 18 16:18:31 EST 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison
