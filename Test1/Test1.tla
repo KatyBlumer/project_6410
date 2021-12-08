@@ -1,9 +1,9 @@
 ------------------------------- MODULE Test1 -------------------------------
-VARIABLE CTXBAG, SHARED
+VARIABLE CTXBAG, SHARED, FAILEDASSERT
 
-INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED
+INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
 
-vars == << CTXBAG, SHARED>>
+vars == << CTXBAG, SHARED, FAILEDASSERT >>
  
 Init == HarmonyInit
       
@@ -45,6 +45,6 @@ Next == (\E self \in {"c0", "c1"}: proc(self))
 Spec == Init /\ [][Next]_vars
 =============================================================================
 \* Modification History
-\* Last modified Mon Nov 29 22:38:19 EST 2021 by noah
+\* Last modified Wed Dec 08 15:16:12 EST 2021 by noah
 \* Last modified Thu Nov 18 16:18:31 EST 2021 by arielkellison
 \* Created Wed Nov 03 08:38:08 EDT 2021 by arielkellison

@@ -1,7 +1,7 @@
 ------------------------------ MODULE Harmony ------------------------------
 EXTENDS Integers, Sequences
 
-VARIABLE CTXBAG, SHARED
+VARIABLE CTXBAG, SHARED, FAILEDASSERT
 
 (* some helper functions *)
 
@@ -38,13 +38,15 @@ init_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> TRUE, spn |
 HarmonyInit == (* global variable *)
  /\ SHARED = e_rec (* start empty *) 
  /\ CTXBAG = [c0 |-> init_ctx, c1 |-> new_ctx, c2 |-> new_ctx]
-            
+ /\ FAILEDASSERT = FALSE
+          
 (* push val onto head of ctx stack *)
 Push(ctx,val,PC) == 
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
     
 (* thread store *)
 StoreVar(ctx,var,PC) == 
@@ -52,20 +54,23 @@ StoreVar(ctx,var,PC) ==
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(var,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
  /\ UNCHANGED SHARED
- 
+ /\ UNCHANGED FAILEDASSERT
+  
 (* shared store *)
 Store(ctx,var,PC) == 
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
  /\ SHARED' = NMap(var,Head(CTXBAG[ctx].stack),SHARED)
-                  
+ /\ UNCHANGED FAILEDASSERT
+                   
 Jump(ctx,PC,PC_new) == 
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC_new]
  /\ UNCHANGED SHARED
- 
+ /\ UNCHANGED FAILEDASSERT
+  
 (* push the value of a shared variable onto the context stack *)
 Load(ctx,var_name,PC) == 
  /\ CTXBAG[ctx].pc = PC
@@ -73,6 +78,7 @@ Load(ctx,var_name,PC) ==
  (* push the value of a shared variable onto the stack *) 
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
  
 (* push the value of a thread variable onto the stack *)
 LoadVar(ctx,var_name,PC) == 
@@ -80,6 +86,7 @@ LoadVar(ctx,var_name,PC) ==
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
  
 Spawn(ctxa,PC) ==
  /\ CTXBAG[ctxa].pc = PC
@@ -88,6 +95,7 @@ Spawn(ctxa,PC) ==
     LET ctxb == CHOOSE x \in DOMAIN CTXBAG : CTXBAG[x].active = FALSE IN
     /\ CTXBAG' = [CTXBAG EXCEPT ![ctxa].pc = PC + 1, ![ctxa].stack = SpawnTail(ctxa), ![ctxb].pc = Head(SpStk), ![ctxb].stack = Tail(SpStk), ![ctxb].active = TRUE, ![ctxb].spn = TRUE]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
  
  (* delete thread variable var*)
 DelVar(ctx,var,PC) == 
@@ -95,6 +103,7 @@ DelVar(ctx,var,PC) ==
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
  
 (* take top of the context's stack and assign it to Frame instruction arguments args *)
 (* TODO want to do store var on possibly a tuple, only works for single var now *) 
@@ -104,7 +113,8 @@ Frame(ctx,args,PC) ==
  /\ CTXBAG[ctx].spn = TRUE 
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
  /\ UNCHANGED SHARED
-  
+ /\ UNCHANGED FAILEDASSERT
+ 
 Return(ctx,PC) == 
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
@@ -113,10 +123,22 @@ Return(ctx,PC) ==
     ELSE 
     /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = Head(CTXBAG[ctx].stack), ![ctx].stack = Tail(CTXBAG[ctx].stack)]
  /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
+ 
+AssertH(ctx, PC) ==
+ /\ CTXBAG[ctx].pc = PC
+ /\ CTXBAG[ctx].active = TRUE
+ /\ UNCHANGED SHARED
+ /\ IF Head(CTXBAG[ctx].stack) = TRUE THEN
+    (/\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
+     /\ UNCHANGED FAILEDASSERT)
+    ELSE 
+    (/\ CTXBAG' = [CTXBAG EXCEPT !.active = FALSE]
+     /\ FAILEDASSERT' = TRUE)
 
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Nov 29 22:36:38 EST 2021 by noah
+\* Last modified Wed Dec 08 15:47:03 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
