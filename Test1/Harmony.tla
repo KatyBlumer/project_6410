@@ -1,5 +1,5 @@
 ------------------------------ MODULE Harmony ------------------------------
-EXTENDS Integers, Sequences
+EXTENDS Integers, Sequences, FiniteSets
 
 VARIABLE CTXBAG, SHARED, FAILEDASSERT
 
@@ -25,14 +25,18 @@ NHead(n,tup)      == IF n = 1 THEN <<Head(tup)>> ELSE NHead(n-1,Tail(tup)) \o <<
 (* nth element of a tup *)
 SpawnHead(ctx)    == NHead(3,CTXBAG[ctx].stack)    
 SpawnTail(ctx)    == NTail(3,CTXBAG[ctx].stack)
+
+(* Number of contexts with specified PC *)
+countLabel(This_PC) == Cardinality({ x \in DOMAIN CTXBAG : CTXBAG[x].pc = This_PC })
+
 (* empty record *)
 e_rec == [FALSE |-> FALSE] 
 (* a new context *)
-new_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> FALSE, spn |-> FALSE]
+new_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> FALSE, spn |-> FALSE, atomic |-> FALSE]
 (* initial context is marked as spawned;
  return checks if context is either in
  a "spawn state" or "applied state" *)
-init_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> TRUE, spn |-> TRUE]
+init_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> TRUE, spn |-> TRUE, atomic |-> FALSE]
 
 (* Harmony Initial State *)
 HarmonyInit == (* global variable *)
@@ -42,6 +46,7 @@ HarmonyInit == (* global variable *)
           
 (* push val onto head of ctx stack *)
 Push(ctx,val,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
@@ -50,6 +55,7 @@ Push(ctx,val,PC) ==
     
 (* thread store *)
 StoreVar(ctx,var,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(var,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
@@ -58,6 +64,7 @@ StoreVar(ctx,var,PC) ==
   
 (* shared store *)
 Store(ctx,var,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
@@ -65,6 +72,7 @@ Store(ctx,var,PC) ==
  /\ UNCHANGED FAILEDASSERT
                    
 Jump(ctx,PC,PC_new) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC_new]
@@ -73,6 +81,7 @@ Jump(ctx,PC,PC_new) ==
   
 (* push the value of a shared variable onto the context stack *)
 Load(ctx,var_name,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  (* push the value of a shared variable onto the stack *) 
@@ -82,6 +91,7 @@ Load(ctx,var_name,PC) ==
  
 (* push the value of a thread variable onto the stack *)
 LoadVar(ctx,var_name,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
@@ -89,6 +99,7 @@ LoadVar(ctx,var_name,PC) ==
  /\ UNCHANGED FAILEDASSERT
  
 Spawn(ctxa,PC) ==
+ /\ (CTXBAG[ctxa].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctxa].pc = PC
  /\ CTXBAG[ctxa].active = TRUE
  /\ LET SpStk == SpawnHead(ctxa) IN
@@ -99,6 +110,7 @@ Spawn(ctxa,PC) ==
  
  (* delete thread variable var*)
 DelVar(ctx,var,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC 
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
@@ -108,6 +120,7 @@ DelVar(ctx,var,PC) ==
 (* take top of the context's stack and assign it to Frame instruction arguments args *)
 (* TODO want to do store var on possibly a tuple, only works for single var now *) 
 Frame(ctx,args,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG[ctx].spn = TRUE 
@@ -116,6 +129,7 @@ Frame(ctx,args,PC) ==
  /\ UNCHANGED FAILEDASSERT
  
 Return(ctx,PC) == 
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ IF CTXBAG[ctx].spn = TRUE THEN
@@ -126,6 +140,7 @@ Return(ctx,PC) ==
  /\ UNCHANGED FAILEDASSERT
  
 AssertH(ctx, PC) ==
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ UNCHANGED SHARED
@@ -136,9 +151,34 @@ AssertH(ctx, PC) ==
     (/\ CTXBAG' = [CTXBAG EXCEPT !.active = FALSE]
      /\ FAILEDASSERT' = TRUE)
 
+JumpCondition(ctx, PC, exp, PC_new) ==
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
+ /\ CTXBAG[ctx].pc = PC
+ /\ CTXBAG[ctx].active = TRUE
+ /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
+ /\ IF Head(CTXBAG[ctx].stack) = exp THEN
+    (/\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC_new, ![ctx].stack = Tail(CTXBAG[ctx].stack)])
+    ELSE
+    (/\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)])
 
+AtomicInc(ctx, PC) ==
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
+ /\ CTXBAG[ctx].pc = PC
+ /\ CTXBAG[ctx].active = TRUE
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].atomic = TRUE]
+ /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
+ 
+ AtomicDec(ctx, PC) ==
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
+ /\ CTXBAG[ctx].pc = PC
+ /\ CTXBAG[ctx].active = TRUE
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].atomic = FALSE]
+ /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
 =============================================================================
 \* Modification History
-\* Last modified Wed Dec 08 15:47:03 EST 2021 by noah
+\* Last modified Fri Dec 10 12:16:58 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
