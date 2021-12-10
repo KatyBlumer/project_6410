@@ -23,22 +23,31 @@ class BaseInstr(object):
     return decorator
 
   @classmethod
-  def create(cls, instr_name, params):
+  def create(cls, instr_name, *params):
+    print('--------------', cls, instr_name)
+    print(params)
     if instr_name not in cls.subclasses:
       raise ValueError("Unrecognized instr_name: {}".format(instr_name))
-    return cls.subclasses[instr_name](params)
+    return cls.subclasses[instr_name](*params)
 
-  @classmethod
+  @staticmethod
   def tla_quotes(s):
     return f'"{s}"'
 
-  @classmethod
-  def har_to_tla_val(val_json):
+  @staticmethod
+  def har_to_tla_val(val_json, required_type=None):
+    if isinstance(val_json, list):
+      if (len(val_json) > 1):
+        print(val_json)
+        raise NotImplementedError("TODO")
+      val_json = val_json[0]
     har_type, har_val = val_json["type"], val_json["value"]
+    if (required_type is not None) and (har_type != required_type):
+      raise ValueError(f"Harmony value type [{har_type}] is not of required type [{required_type}]")
     if har_type == "bool":
-      har_val = har_val.toupper()
+      har_val = har_val.upper()
     elif har_type == "atom":
-      har_val = self.tla_quotes(har_val)
+      har_val = BaseInstr.tla_quotes(har_val)
     elif har_type == "pc":
       pass
     elif har_type == "dict":
@@ -52,7 +61,8 @@ class BaseInstr(object):
     return har_val
 
   def fmt_instr(self, *args):
-      return f"pc{self.pc}(ctx) == /\ {self.instr_name}(ctx, {", ".join(args)})"
+    arg_list = ", ".join([f"{x}" for x in args])
+    return f"pc{self.pc}(ctx) == /\ {self.instr_name}(ctx, {arg_list})"
 
   def tla_instr(self):
       raise NotImplementedError()  # TODO - add message
@@ -64,7 +74,7 @@ class InstrFrame(BaseInstr):
     arg = self.har_instr["args"]
     if arg == "()":
       arg = "INIT"
-    return self.fmt_instr(f'"{arg}}"', self.pc)
+    return self.fmt_instr(f'"{arg}"', self.pc)
 
 @BaseInstr.register_subclass(["Push", "Store"])
 class InstrHandleVal(BaseInstr):
@@ -84,16 +94,14 @@ class InstrHandleStr(BaseInstr):
 @BaseInstr.register_subclass("Load")
 class InstrLoad(BaseInstr):
   def tla_instr(self):
-    assert self.har_instr["value"]["type"] == "atom"
-    return self.fmt_instr(self.tla_quotes(self.har_instr["value"]["value"]), self.pc)
+    return self.fmt_instr(
+        BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"),
+        self.pc)
 
 @BaseInstr.register_subclass(["Return", "Spawn"])
 class InstrNoArg(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(self.pc)
-
-
-
 
 
 def main():
@@ -103,43 +111,45 @@ def main():
 
   with open(HARMONY_FILE) as f:
     har_json = json.load(f)
-
   har_instr = har_json["code"]
 
   tla_instr_lines = []
   for ii, instr in enumerate(har_instr):
-      tla_instr_lines.append(BaseInstr.create(instr["op"], ii, instr).tla_instr())
+      tla_instr_lines.append(BaseInstr.create(instr["op"], *(ii, instr)).tla_instr())
 
   instr_conjunction = " \/ ".join([f"pc{ii}(self)" for ii in range(len(tla_instr_lines))])
 
-  final_output = f"""\
-  ------------------------------- MODULE {os.path.basename(OUTPUT_TLA_FILE)} -------------------------------
-  VARIABLE CTXBAG, SHARED
+  final_output_fmt = """------------------------------- MODULE {output_module_name} -------------------------------
+VARIABLE CTXBAG, SHARED
 
-  INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED
+INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED
 
-  vars == << CTXBAG, SHARED>>
+vars == << CTXBAG, SHARED>>
 
-  Init == HarmonyInit
+Init == HarmonyInit
 
-  {'\n'.join(tla_instr_lines)}
+{tla_instr_block}
 
-  proc(self) == {instr_conjunction}
+proc(self) == {instr_conjunction}
 
-  Next == (\E self \in {{"c0", "c1"}}: proc(self))
+Next == (\E self \in {{"c0", "c1"}}: proc(self))
 
-  Spec == Init /\ [][Next]_vars
+Spec == Init /\ [][Next]_vars
 
-  =============================================================================
-  """
+=============================================================================
+"""
 
+  output_module_name = os.path.basename(OUTPUT_TLA_FILE).split(".")[0]
+  tla_instr_block = '\n'.join(tla_instr_lines)
   with open(OUTPUT_TLA_FILE, "w") as f:
-    f.write(final_output)
+    f.write(final_output_fmt.format(**locals()))
 
 
 if __name__ == "__main__":
     main()
 
 # TODO:
-#   - write out final output
+#   - current contexts are hardcoded? (\E self \in {{"c0", "c1"}})
+#   - have this run the harmony compiler too?
+#   - Move final_output outside of main()
 #   - force harmony module to be imported somehow? or to exist in same file as output?
