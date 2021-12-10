@@ -4,33 +4,33 @@ VARIABLE CTXBAG, SHARED, FAILEDASSERT
 INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
 
 vars == << CTXBAG, SHARED, FAILEDASSERT >>
- 
+
 Init == HarmonyInit
-      
+
 pc0(ctx) == /\ Frame(ctx, <<"INIT">>, 0)
-            
+
 pc1(ctx) == /\ Push(ctx, FALSE, 1)
-            
+
 pc2(ctx) == /\ Store(ctx, "c", 2)
-           
-pc3(ctx) == /\ Jump(ctx, 3, 9) 
+
+pc3(ctx) == /\ Jump(ctx, 3, 9)
 
 pc4(ctx) == /\ Frame(ctx, <<"arg1", "arg2">> ,4)
 
 pc5(ctx) == /\ LoadVar(ctx, "arg1", 5)
-          
+
 pc6(ctx) == /\ DelVar(ctx, "arg1", 6)
 
 pc7(ctx) == /\ Store(ctx, "a", 7)
 
 pc8(ctx) == /\ Return(ctx, 8)
-            
+
 pc9(ctx) == /\ Push(ctx, 4, 9)
-            
+
 pc10(ctx) == /\ Load(ctx, "c", 10)
-             
+
 pc11(ctx) == /\ Push(ctx, <<>>, 11)
-            
+
 pc12(ctx) == /\ Spawn(ctx, 12)
 
 pc13(ctx) == /\ Return(ctx, 13)
