@@ -5,11 +5,11 @@ VARIABLE CTXBAG, SHARED, FAILEDASSERT
 
 (* some helper functions *)
 
-
+Neg == [F |-> "T", T |-> "F"]
 (* add var with val to map *)
 NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x = var THEN val ELSE map[x]] 
 (* remove var from map, until empty map, i.e., FALSE |-> FALSE*)
-NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
+NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {FALSE} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
 (* remove var from map *)
 NMapReturn(var,map) == [x \in ((DOMAIN map) \ {var}) |-> map[x]] 
 RECURSIVE NTail (_, _)
@@ -87,7 +87,9 @@ Load(ctx,var_name,PC) ==
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  (* push the value of a shared variable onto the stack *) 
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
+ /\ CTXBAG' = IF var_name = ""
+              THEN [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[Head(Tail(CTXBAG[ctx].stack))][Head(CTXBAG[ctx].stack)]>> \o CTXBAG[ctx].stack]
+              ELSE [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
  /\ UNCHANGED SHARED
  /\ UNCHANGED FAILEDASSERT
  
@@ -150,7 +152,7 @@ AssertH(ctx, PC) ==
     (/\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
      /\ UNCHANGED FAILEDASSERT)
     ELSE 
-    (/\ CTXBAG' = [CTXBAG EXCEPT !.active = FALSE]
+    (/\ CTXBAG' = [x \in DOMAIN CTXBAG |->  [pc |-> CTXBAG[x].pc, stack |-> CTXBAG[x].stack, vars|-> CTXBAG[x].vars, active |-> FALSE, spn |-> CTXBAG[x].spn, atomic |-> CTXBAG[x].atomic]]
      /\ FAILEDASSERT' = TRUE)
 
 JumpCond(ctx, PC, exp, PC_new) ==
@@ -192,7 +194,7 @@ NotOp(ctx, PC) ==
  /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << \neg Head(CTXBAG[ctx].stack)>> \o Tail(CTXBAG[ctx].stack)]
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << Neg[Head(CTXBAG[ctx].stack)]>> \o Tail(CTXBAG[ctx].stack)]
  /\ UNCHANGED SHARED
  /\ UNCHANGED FAILEDASSERT
  
@@ -203,8 +205,16 @@ EqOp(ctx, PC) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << (Head(CTXBAG[ctx].stack) = Head(Tail(CTXBAG[ctx].stack))) >> \o Tail(CTXBAG[ctx].stack)]
  /\ UNCHANGED SHARED
  /\ UNCHANGED FAILEDASSERT
+ 
+Dummy(ctx, PC) ==
+ /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
+ /\ CTXBAG[ctx].pc = PC
+ /\ CTXBAG[ctx].active = TRUE
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1]
+ /\ UNCHANGED SHARED
+ /\ UNCHANGED FAILEDASSERT
 =============================================================================
 \* Modification History
-\* Last modified Fri Dec 10 16:30:35 EST 2021 by noah
+\* Last modified Fri Dec 10 17:28:44 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
