@@ -102,7 +102,7 @@ Frame(ctx,args,PC) ==
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
  /\ CTXBAG[ctx].spn = TRUE 
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
+ /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(args,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars)]
  /\ UNCHANGED SHARED
   
 Return(ctx,PC) == 
@@ -117,6 +117,6 @@ Return(ctx,PC) ==
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Nov 29 22:50:11 EST 2021 by noah
-\* Last modified Thu Nov 18 17:01:53 EST 2021 by arielkellison
+\* Last modified Mon Nov 29 22:12:36 EST 2021 by noah
+\* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
