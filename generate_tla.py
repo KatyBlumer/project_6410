@@ -24,8 +24,6 @@ class BaseInstr(object):
 
   @classmethod
   def create(cls, instr_name, *params):
-    print('--------------', cls, instr_name)
-    print(params)
     if instr_name not in cls.subclasses:
       raise ValueError("Unrecognized instr_name: {}".format(instr_name))
     return cls.subclasses[instr_name](*params)
@@ -74,7 +72,7 @@ class InstrFrame(BaseInstr):
     arg = self.har_instr["args"]
     if arg == "()":
       arg = "INIT"
-    return self.fmt_instr(f'"{arg}"', self.pc)
+    return self.fmt_instr(f"<<{self.tla_quotes(arg)}>>", self.pc)
 
 @BaseInstr.register_subclass(["Push", "Store"])
 class InstrHandleVal(BaseInstr):
@@ -98,7 +96,7 @@ class InstrLoad(BaseInstr):
         BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"),
         self.pc)
 
-@BaseInstr.register_subclass(["Return", "Spawn"])
+@BaseInstr.register_subclass(["Return", "Spawn", "Dummy"])
 class InstrNoArg(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(self.pc)
@@ -112,6 +110,7 @@ def main():
   with open(HARMONY_FILE) as f:
     har_json = json.load(f)
   har_instr = har_json["code"]
+  har_instr = har_instr[:-1]  # Skip last line (deleting "result" variable)
 
   tla_instr_lines = []
   for ii, instr in enumerate(har_instr):
@@ -120,11 +119,11 @@ def main():
   instr_conjunction = " \/ ".join([f"pc{ii}(self)" for ii in range(len(tla_instr_lines))])
 
   final_output_fmt = """------------------------------- MODULE {output_module_name} -------------------------------
-VARIABLE CTXBAG, SHARED
+VARIABLE CTXBAG, SHARED, FAILEDASSERT
 
-INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED
+INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
 
-vars == << CTXBAG, SHARED>>
+vars == << CTXBAG, SHARED, FAILEDASSERT >>
 
 Init == HarmonyInit
 
