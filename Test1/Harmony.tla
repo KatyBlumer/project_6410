@@ -73,11 +73,11 @@ HarmonyInit == (* global variable *)
  /\ CTXBAG = [c0 |-> init_ctx, c1 |-> new_ctx, c2 |-> new_ctx]
  /\ FAILEDASSERT = FALSE
 
-CommonAssertsStart(ctx,PC) ==
+DefaultLite(ctx,PC) ==
  /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
  /\ CTXBAG[ctx].active = TRUE
-CommonAssertsTODORenameMe(ctx,PC) ==
+Default(ctx,PC) ==
  /\ CommonAssertsStart(ctx,PC)
  /\ UNCHANGED SHARED
  /\ UNCHANGED FAILEDASSERT
