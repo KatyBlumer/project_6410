@@ -8,4 +8,6 @@
 !*/*.toolbox/Model_*/MC.cfg
 !*/*.toolbox/Model_*/MC.tla
 
+*/*.toolbox/PetersonModel/*
+
 */*.toolbox/.project
