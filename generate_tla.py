@@ -96,7 +96,7 @@ class InstrLoad(BaseInstr):
         BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"),
         self.pc)
 
-@BaseInstr.register_subclass(["Return", "Spawn"])
+@BaseInstr.register_subclass(["Return", "Spawn", "Dummy"])
 class InstrNoArg(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(self.pc)
