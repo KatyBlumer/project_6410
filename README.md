@@ -1,6 +1,6 @@
 # A TLA+ Specification of Harmony VM Instructions 
 
-This repository contains the Harmony TLA+ module, created by Noah Bertram, Katy Blumer, and Ariel Kellison for Cornell CS6410. This module contains TLA+ specifications the Harmony initial state and the following Harmony VM instructions.
+This repository contains the Harmony TLA+ module, created by Noah Bertram, Katy Blumer, and Ariel Kellison for Cornell CS6410. The Harmony module contains TLA+ specifications the Harmony initial state and the following Harmony VM instructions.
 
 1. Push
 2. StoreVar
