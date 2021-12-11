@@ -55,17 +55,17 @@ HarmonyInit == (* global variable *)
  /\ FAILEDASSERT = FALSE
 
 (* push val onto head of ctx stack *)
-Push(ctx,val,PC) ==
+Push(ctx,PC,val) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
 
 (* thread store *)
-StoreVar(ctx,var,PC) ==
+StoreVar(ctx,PC,var) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(var,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
 
 (* shared store *)
-Store(ctx,var,PC) ==
+Store(ctx,PC,var) ==
  /\ DefaultStateCheckPartial(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
  /\ SHARED' = IF var = ""
@@ -78,7 +78,7 @@ Jump(ctx,PC,PC_new) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC_new]
 
 (* push the value of a shared variable onto the context stack *)
-Load(ctx,var_name,PC) ==
+Load(ctx,PC,var_name) ==
  /\ DefaultStateCheck(ctx, PC)
  (* push the value of a shared variable onto the stack *)
  /\ CTXBAG' = IF var_name = ""
@@ -86,7 +86,7 @@ Load(ctx,var_name,PC) ==
               ELSE [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
 
 (* push the value of a thread variable onto the stack *)
-LoadVar(ctx,var_name,PC) ==
+LoadVar(ctx,PC,var_name) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
 
@@ -97,13 +97,13 @@ Spawn(ctxa,PC) ==
     /\ CTXBAG' = [CTXBAG EXCEPT ![ctxa].pc = PC + 1, ![ctxa].stack = SpawnTail(ctxa), ![ctxb].pc = Head(SpStk), ![ctxb].stack = Tail(SpStk), ![ctxb].active = TRUE, ![ctxb].spn = TRUE]
 
  (* delete thread variable var*)
-DelVar(ctx,var,PC) ==
+DelVar(ctx,PC,var) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
 
 (* take top of the context's stack and assign it to Frame instruction arguments args *)
 (* TODO want to do store var on possibly a tuple, only works for single var now *)
-Frame(ctx,args,PC) ==
+Frame(ctx,PC,args) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG[ctx].spn = TRUE
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
@@ -153,7 +153,7 @@ Dummy(ctx, PC) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1]
 =============================================================================
 \* Modification History
-\* Last modified Fri Dec 10 20:44:30 EST 2021 by katyblumer
+\* Last modified Fri Dec 10 20:50:31 EST 2021 by katyblumer
 \* Last modified Fri Dec 10 19:54:36 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
