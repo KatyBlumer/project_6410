@@ -9,7 +9,7 @@ Neg == [F |-> "T", T |-> "F"]
 (* add var with val to map *)
 NMap(var,val,map)  == [x \in ((DOMAIN map) \union {var}) \ {"FALSE"} |-> IF x = var THEN val ELSE map[x]] 
 (* remove var from map, until empty map, i.e., FALSE |-> FALSE*)
-NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {FALSE} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
+NMap2(var,map) == [x \in ((DOMAIN map) \ {var}) \union {"FALSE"} |-> IF x \in DOMAIN map THEN map[x] ELSE FALSE] 
 (* remove var from map *)
 NMapReturn(var,map) == [x \in ((DOMAIN map) \ {var}) |-> map[x]] 
 RECURSIVE NTail (_, _)
@@ -181,15 +181,7 @@ AtomicInc(ctx, PC) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].atomic = FALSE]
  /\ UNCHANGED SHARED
  /\ UNCHANGED FAILEDASSERT
- 
-ChooseH(ctx, PC) ==
- /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
- /\ CTXBAG[ctx].pc = PC
- /\ CTXBAG[ctx].active = TRUE
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << CHOOSE x \in Head(CTXBAG[ctx].stack) : x \in Head(CTXBAG[ctx].stack)>> \o Tail(CTXBAG[ctx].stack)]
- /\ UNCHANGED SHARED
- /\ UNCHANGED FAILEDASSERT
- 
+
 NotOp(ctx, PC) ==
  /\ (CTXBAG[ctx].atomic = TRUE \/ (\forall x \in DOMAIN CTXBAG : CTXBAG[x].atomic = FALSE))
  /\ CTXBAG[ctx].pc = PC
@@ -215,6 +207,6 @@ Dummy(ctx, PC) ==
  /\ UNCHANGED FAILEDASSERT
 =============================================================================
 \* Modification History
-\* Last modified Fri Dec 10 17:28:44 EST 2021 by noah
+\* Last modified Fri Dec 10 19:54:36 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
