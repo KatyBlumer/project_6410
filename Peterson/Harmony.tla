@@ -77,23 +77,22 @@ StoreVar(ctx,PC,var) ==
 (* shared store *)
 Store(ctx,PC,var) ==
  /\ DefaultStateCheckPartial(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT
+ /\ IF var = ""
+    THEN (
+     /\ SHARED' = NMap(Head(Tail(Tail(CTXBAG[ctx].stack))), NMap(Head(Tail(CTXBAG[ctx].stack)),
+                      Head(CTXBAG[ctx].stack),
+                      SHARED[Head(Tail(Tail(CTXBAG[ctx].stack)))]), 
+                      SHARED)
+     /\ CTXBAG' = [CTXBAG EXCEPT
                   ![ctx].pc = PC + 1,
-                  ![ctx].stack = Tail(CTXBAG[ctx].stack)]
- /\ SHARED' = IF var = ""
-              THEN NMap(
-                  Head(Tail(Tail(CTXBAG[ctx].stack))),
-                  NMap(Head(Tail(CTXBAG[ctx].stack)),
-                       Head(CTXBAG[ctx].stack),
-                       SHARED[Head(Tail(Tail(CTXBAG[ctx].stack)))]
-                  ),
-                  SHARED
-              )
-              ELSE NMap(
-                  var,
-                  Head(CTXBAG[ctx].stack),
-                  SHARED
-              )
+                  ![ctx].stack = Tail(Tail(Tail(CTXBAG[ctx].stack)))])
+    ELSE (
+     /\ SHARED' = NMap(var,
+                      Head(CTXBAG[ctx].stack),
+                      SHARED)
+     /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = Tail(CTXBAG[ctx].stack)])
  /\ UNCHANGED FAILEDASSERT
 
 Jump(ctx,PC,PC_new) ==
@@ -215,7 +214,7 @@ Dummy(ctx, PC) ==
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1]
 =============================================================================
 \* Modification History
+\* Last modified Fri Dec 10 23:42:36 EST 2021 by noah
 \* Last modified Fri Dec 10 21:18:32 EST 2021 by katyblumer
-\* Last modified Fri Dec 10 19:54:36 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
