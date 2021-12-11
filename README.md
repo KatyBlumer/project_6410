@@ -19,4 +19,4 @@ This repository contains the Harmony TLA+ module, created by Noah Bertram, Katy 
 15. EqOp
 16. Dummy
 
-There are three directories with examples of Harmony programs (.hny files) whose machine instructions (.hvm files) have been hand translated into TLA+ modules. Each directory contains the root Harmony module, for ease importing into TLA+.  
+There are three directories with examples of Harmony programs (.hny files) whose machine instructions (.hvm files) have been hand translated into TLA+ modules. Each directory contains the root Harmony module, for ease importing into TLA+.  The Test1 and Test2 directories are translations of very simple Harmony programs. The Peterson directory contains Peterson's algorithm, which uses all of the instructions implemented thus far. 
