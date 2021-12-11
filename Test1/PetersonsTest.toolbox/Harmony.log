@@ -1,0 +1,239 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.12.1)  10 DEC 2021 21:33
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Harmony.tex
+(./Harmony.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18>
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count179
+\c@section=\count180
+\c@subsection=\count181
+\c@subsubsection=\count182
+\c@paragraph=\count183
+\c@subparagraph=\count184
+\c@figure=\count185
+\c@table=\count186
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (/usr/share/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+)) (/usr/share/texmf-dist/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
+) (/usr/share/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\symlength=\skip49
+\equalswidth=\skip50
+\charwidth=\skip51
+\boxrulewd=\skip52
+\boxlineht=\skip53
+\boxruleht=\skip54
+\boxruledp=\skip55
+\pcalvspace=\skip56
+\lcomindent=\skip57
+\@xlen=\skip58
+\templena=\skip59
+\templenb=\skip60
+\tempboxa=\box47
+\vshadelen=\skip61
+\boxwidth=\skip62
+\multicommentdepth=\skip63
+\c@pardepth=\count187
+\tempsbox=\box48
+\@cparht=\skip64
+\@cpardp=\skip65
+\xmcomlen=\skip66
+\spacewidth=\skip67
+\alignboxwidth=\skip68
+\alignwidth=\skip69
+\alignbox=\box49
+\symtlaitalics=\mathgroup5
+\c@tlx@ctr=\count188
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2020-07-07 v1.5u LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks15
+\verbatim@line=\toks16
+\verbatim@in@stream=\read2
+) (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count189
+\l__pdf_internal_box=\box50
+) (./Harmony.aux)
+\openout1 = `Harmony.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 939.
+LaTeX Font Info:    ... okay on input line 939.
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count190
+\scratchdimen=\dimen139
+\scratchbox=\box51
+\nofMPsegments=\count191
+\nofMParguments=\count192
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count193
+\MPscratchDim=\dimen140
+\MPnumerator=\count194
+\makeMPintoPDFobject=\count195
+\everyMPtoPDFconversion=\toks18
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 942.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 942.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 94
+2.
+(/usr/share/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 957.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 957.
+
+Overfull \hbox (117.19211pt too wide) in paragraph at lines 961--962
+[][] 
+ []
+
+
+Overfull \hbox (154.43025pt too wide) in paragraph at lines 970--971
+[][] 
+ []
+
+
+Overfull \hbox (430.72751pt too wide) in paragraph at lines 984--989
+[][] 
+ []
+
+
+Overfull \hbox (701.14876pt too wide) in paragraph at lines 989--990
+[][] 
+ []
+
+
+Overfull \hbox (66.85751pt too wide) in paragraph at lines 1005--1006
+[][] 
+ []
+
+
+Overfull \hbox (53.99734pt too wide) in paragraph at lines 1022--1023
+[][] 
+ []
+
+
+Overfull \hbox (65.7101pt too wide) in paragraph at lines 1027--1028
+[][] 
+ []
+
+
+Overfull \hbox (68.56839pt too wide) in paragraph at lines 1049--1050
+[][] 
+ []
+
+
+Overfull \hbox (61.7184pt too wide) in paragraph at lines 1062--1063
+[][] 
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Overfull \hbox (250.60983pt too wide) in paragraph at lines 1161--1162
+[][] 
+ []
+
+
+Overfull \hbox (22.84428pt too wide) in paragraph at lines 1165--1166
+[][] 
+ []
+
+
+Overfull \hbox (38.08266pt too wide) in paragraph at lines 1177--1178
+[][] 
+ []
+
+
+Overfull \hbox (6.60974pt too wide) in paragraph at lines 1183--1184
+[][] 
+ []
+
+[3]
+Overfull \hbox (44.20752pt too wide) in paragraph at lines 1224--1225
+[][] 
+ []
+
+
+Overfull \hbox (98.86427pt too wide) in paragraph at lines 1268--1269
+[][] 
+ []
+
+
+Overfull \hbox (93.64352pt too wide) in paragraph at lines 1272--1273
+[][] 
+ []
+
+[4]
+Overfull \hbox (71.77286pt too wide) in paragraph at lines 1291--1292
+[][] 
+ []
+
+
+Overfull \hbox (225.85631pt too wide) in paragraph at lines 1299--1300
+[][] 
+ []
+
+[5] (./Harmony.aux) ) 
+Here is how much of TeX's memory you used:
+ 1281 strings out of 478994
+ 17375 string characters out of 5864751
+ 330933 words of memory out of 5000000
+ 18802 multiletter control sequences out of 15000+600000
+ 408901 words of font info for 48 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 44i,10n,50p,219b,323s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcs
+c10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
+share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr
+/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pf
+b></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
+Output written on Harmony.pdf (5 pages, 143088 bytes).
+PDF statistics:
+ 72 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
