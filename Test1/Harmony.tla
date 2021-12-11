@@ -15,7 +15,7 @@ NMapReturn(var,map) == [x \in ((DOMAIN map) \ {var}) |-> map[x]]
 RECURSIVE NTail (_, _)
 RECURSIVE NHead (_, _)
 RECURSIVE AddMult (_, _, _)
-AddMult(var_tup, val_tup, map) == IF Len(var_tup) = 1 THEN [x \in ((DOMAIN map) \union {Head(var_tup)}) \ {"FALSE"} |-> IF x = Head(var_tup) THEN Head(val_tup) ELSE map[x]] 
+AddMult(var_tup, val_tup, map) == IF Len(var_tup) = 1 THEN [x \in ((DOMAIN map) \union {Head(var_tup)}) \ {"FALSE"} |-> IF x = Head(var_tup) THEN Head(val_tup) ELSE map[x]]
                                   ELSE [x \in ((DOMAIN AddMult(Tail(var_tup), Tail(val_tup), map)) \union {Head(var_tup)}) \ {"FALSE"} |-> IF x = Head(var_tup) THEN Head(val_tup) ELSE AddMult(Tail(var_tup), Tail(val_tup), map)[x]]
 
 
@@ -51,26 +51,49 @@ init_ctx == [pc |-> 0, stack |-> <<<<>>>>, vars|-> e_rec, active |-> TRUE, spn |
 (* Harmony Initial State *)
 HarmonyInit == (* global variable *)
  /\ SHARED = e_rec (* start empty *)
- /\ CTXBAG = [c0 |-> init_ctx, c1 |-> new_ctx, c2 |-> new_ctx]
+ /\ CTXBAG = [c0 |-> init_ctx,
+              c1 |-> new_ctx,
+              c2 |-> new_ctx]
  /\ FAILEDASSERT = FALSE
 
 (* push val onto head of ctx stack *)
 Push(ctx,PC,val) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = <<val>> \o CTXBAG[ctx].stack]
 
 (* thread store *)
 StoreVar(ctx,PC,var) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = NMap(var,Head(CTXBAG[ctx].stack),CTXBAG[ctx].vars) ]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = Tail(CTXBAG[ctx].stack),
+                  ![ctx].vars = NMap(var,
+                                     Head(CTXBAG[ctx].stack),
+                                     CTXBAG[ctx].vars)
+              ]
 
 (* shared store *)
 Store(ctx,PC,var) ==
  /\ DefaultStateCheckPartial(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = Tail(CTXBAG[ctx].stack)]
  /\ SHARED' = IF var = ""
-              THEN NMap(Head(Tail(Tail(CTXBAG[ctx].stack))), NMap(Head(Tail(CTXBAG[ctx].stack)), Head(CTXBAG[ctx].stack), SHARED[Head(Tail(Tail(CTXBAG[ctx].stack)))] ), SHARED)
-              ELSE NMap(var,Head(CTXBAG[ctx].stack),SHARED)
+              THEN NMap(
+                  Head(Tail(Tail(CTXBAG[ctx].stack))),
+                  NMap(Head(Tail(CTXBAG[ctx].stack)),
+                       Head(CTXBAG[ctx].stack),
+                       SHARED[Head(Tail(Tail(CTXBAG[ctx].stack)))]
+                  ),
+                  SHARED
+              )
+              ELSE NMap(
+                  var,
+                  Head(CTXBAG[ctx].stack),
+                  SHARED
+              )
  /\ UNCHANGED FAILEDASSERT
 
 Jump(ctx,PC,PC_new) ==
@@ -82,47 +105,78 @@ Load(ctx,PC,var_name) ==
  /\ DefaultStateCheck(ctx, PC)
  (* push the value of a shared variable onto the stack *)
  /\ CTXBAG' = IF var_name = ""
-              THEN [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[Head(Tail(CTXBAG[ctx].stack))][Head(CTXBAG[ctx].stack)]>> \o CTXBAG[ctx].stack]
-              ELSE [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
+              THEN [CTXBAG EXCEPT
+                      ![ctx].pc = PC + 1,
+                      ![ctx].stack = <<SHARED[Head(Tail(CTXBAG[ctx].stack))][Head(CTXBAG[ctx].stack)]>> \o CTXBAG[ctx].stack]
+              ELSE [CTXBAG EXCEPT
+                      ![ctx].pc = PC + 1,
+                      ![ctx].stack = <<SHARED[var_name]>> \o CTXBAG[ctx].stack]
 
 (* push the value of a thread variable onto the stack *)
 LoadVar(ctx,PC,var_name) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = <<CTXBAG[ctx].vars[var_name]>> \o CTXBAG[ctx].stack]
 
 Spawn(ctxa,PC) ==
  /\ DefaultStateCheck(ctxa, PC)
  /\ LET SpStk == SpawnHead(ctxa) IN
     LET ctxb == CHOOSE x \in DOMAIN CTXBAG : CTXBAG[x].active = FALSE IN
-    /\ CTXBAG' = [CTXBAG EXCEPT ![ctxa].pc = PC + 1, ![ctxa].stack = SpawnTail(ctxa), ![ctxb].pc = Head(SpStk), ![ctxb].stack = Tail(SpStk), ![ctxb].active = TRUE, ![ctxb].spn = TRUE]
+    /\ CTXBAG' = [CTXBAG EXCEPT
+                    ![ctxa].pc = PC + 1,
+                    ![ctxa].stack = SpawnTail(ctxa),
+                    ![ctxb].pc = Head(SpStk),
+                    ![ctxb].stack = Tail(SpStk),
+                    ![ctxb].active = TRUE,
+                    ![ctxb].spn = TRUE]
 
  (* delete thread variable var*)
 DelVar(ctx,PC,var) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].vars = NMap2(var,CTXBAG[ctx].vars)]
 
 (* take top of the context's stack and assign it to Frame instruction arguments args *)
 (* TODO want to do store var on possibly a tuple, only works for single var now *)
 Frame(ctx,PC,args) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG[ctx].spn = TRUE
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack), ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = Tail(CTXBAG[ctx].stack),
+                  ![ctx].vars = AddMult(args, CTXBAG[ctx].stack, CTXBAG[ctx].vars)]
 
 Return(ctx,PC) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ IF CTXBAG[ctx].spn = TRUE THEN
+ /\ IF CTXBAG[ctx].spn = TRUE
+    THEN
     /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].active = FALSE]
     ELSE
-    /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = Head(CTXBAG[ctx].stack), ![ctx].stack = Tail(CTXBAG[ctx].stack)]
+    /\ CTXBAG' = [CTXBAG EXCEPT
+                    ![ctx].pc = Head(CTXBAG[ctx].stack),
+                    ![ctx].stack = Tail(CTXBAG[ctx].stack)]
 
 AssertH(ctx, PC) ==
  /\ DefaultStateCheckPartial(ctx, PC)
  /\ UNCHANGED SHARED
- /\ IF Head(CTXBAG[ctx].stack) = TRUE THEN
-    (/\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = Tail(CTXBAG[ctx].stack)]
+ /\ IF Head(CTXBAG[ctx].stack) = TRUE
+    THEN
+    (/\ CTXBAG' = [CTXBAG EXCEPT
+                      ![ctx].pc = PC + 1,
+                      ![ctx].stack = Tail(CTXBAG[ctx].stack)]
      /\ UNCHANGED FAILEDASSERT)
     ELSE
-    (/\ CTXBAG' = [x \in DOMAIN CTXBAG |->  [pc |-> CTXBAG[x].pc, stack |-> CTXBAG[x].stack, vars|-> CTXBAG[x].vars, active |-> FALSE, spn |-> CTXBAG[x].spn, atomic |-> CTXBAG[x].atomic]]
+    (/\ CTXBAG' = [x \in DOMAIN CTXBAG |->  [
+                          pc |-> CTXBAG[x].pc,
+                          stack |-> CTXBAG[x].stack,
+                          vars|-> CTXBAG[x].vars,
+                          active |-> FALSE,
+                          spn |-> CTXBAG[x].spn,
+                          atomic |-> CTXBAG[x].atomic
+                      ]
+                  ]
      /\ FAILEDASSERT' = TRUE)
 
 JumpCond(ctx, PC, exp, PC_new) ==
@@ -134,26 +188,34 @@ JumpCond(ctx, PC, exp, PC_new) ==
 
 AtomicInc(ctx, PC) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].atomic = TRUE]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].atomic = TRUE]
 
  AtomicDec(ctx, PC) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].atomic = FALSE]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].atomic = FALSE]
 
 NotOp(ctx, PC) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << Neg[Head(CTXBAG[ctx].stack)]>> \o Tail(CTXBAG[ctx].stack)]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = << Neg[Head(CTXBAG[ctx].stack)]>> \o Tail(CTXBAG[ctx].stack)]
 
 EqOp(ctx, PC) ==
  /\ DefaultStateCheck(ctx, PC)
- /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1, ![ctx].stack = << (Head(CTXBAG[ctx].stack) = Head(Tail(CTXBAG[ctx].stack))) >> \o Tail(CTXBAG[ctx].stack)]
+ /\ CTXBAG' = [CTXBAG EXCEPT
+                  ![ctx].pc = PC + 1,
+                  ![ctx].stack = << (Head(CTXBAG[ctx].stack) = Head(Tail(CTXBAG[ctx].stack))) >> \o Tail(CTXBAG[ctx].stack)]
 
 Dummy(ctx, PC) ==
  /\ DefaultStateCheck(ctx, PC)
  /\ CTXBAG' = [CTXBAG EXCEPT ![ctx].pc = PC + 1]
 =============================================================================
 \* Modification History
-\* Last modified Fri Dec 10 20:50:31 EST 2021 by katyblumer
+\* Last modified Fri Dec 10 21:18:32 EST 2021 by katyblumer
 \* Last modified Fri Dec 10 19:54:36 EST 2021 by noah
 \* Last modified Thu Nov 18 16:26:44 EST 2021 by arielkellison
 \* Created Tue Nov 02 18:59:20 EDT 2021 by arielkellison
