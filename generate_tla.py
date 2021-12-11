@@ -2,6 +2,26 @@ import json
 import os
 import sys
 
+FINAL_OUTPUT_FMT = """\
+------------------------------- MODULE {output_module_name} -------------------------------
+VARIABLE CTXBAG, SHARED, FAILEDASSERT
+
+INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
+
+vars == << CTXBAG, SHARED, FAILEDASSERT >>
+
+Init == HarmonyInit
+
+{tla_instr_block}
+
+proc(self) == {instr_conjunction}
+
+Next == (\E self \in {{"c0", "c1", "c2"}}: proc(self))
+
+Spec == Init /\ [][Next]_vars
+
+=============================================================================
+"""
 
 class BaseInstr(object):
   subclasses = {}
@@ -60,7 +80,9 @@ class BaseInstr(object):
 
   def fmt_instr(self, *args):
     arg_list = ", ".join([f"{x}" for x in args])
-    return f"pc{self.pc}(ctx) == /\ {self.instr_name}(ctx, {arg_list})"
+    if arg_list:
+      arg_list = f", {arg_list}"
+    return f"pc{self.pc}(ctx) == /\ {self.instr_name}(ctx, {self.pc}{arg_list})"
 
   def tla_instr(self):
       raise NotImplementedError()  # TODO - add message
@@ -72,34 +94,33 @@ class InstrFrame(BaseInstr):
     arg = self.har_instr["args"]
     if arg == "()":
       arg = "INIT"
-    return self.fmt_instr(f"<<{self.tla_quotes(arg)}>>", self.pc)
+    return self.fmt_instr(f"<<{self.tla_quotes(arg)}>>")
 
 @BaseInstr.register_subclass(["Push", "Store"])
 class InstrHandleVal(BaseInstr):
   def tla_instr(self):
-    return self.fmt_instr(BaseInstr.har_to_tla_val(self.har_instr["value"]), self.pc)
+    return self.fmt_instr(BaseInstr.har_to_tla_val(self.har_instr["value"]))
 
 @BaseInstr.register_subclass("Jump")
 class InstrJump(BaseInstr):
   def tla_instr(self):
-    return self.fmt_instr(self.pc, self.har_instr["pc"])
+    return self.fmt_instr(self.har_instr["pc"])
 
 @BaseInstr.register_subclass(["LoadVar", "DelVar"])
 class InstrHandleStr(BaseInstr):
   def tla_instr(self):
-    return self.fmt_instr(self.tla_quotes(self.har_instr["value"]), self.pc)
+    return self.fmt_instr(self.tla_quotes(self.har_instr["value"]))
 
 @BaseInstr.register_subclass("Load")
 class InstrLoad(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(
-        BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"),
-        self.pc)
+        BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"))
 
 @BaseInstr.register_subclass(["Return", "Spawn", "Dummy"])
 class InstrNoArg(BaseInstr):
   def tla_instr(self):
-    return self.fmt_instr(self.pc)
+    return self.fmt_instr()
 
 
 def main():
@@ -116,32 +137,15 @@ def main():
   for ii, instr in enumerate(har_instr):
       tla_instr_lines.append(BaseInstr.create(instr["op"], *(ii, instr)).tla_instr())
 
-  instr_conjunction = " \/ ".join([f"pc{ii}(self)" for ii in range(len(tla_instr_lines))])
-
-  final_output_fmt = """------------------------------- MODULE {output_module_name} -------------------------------
-VARIABLE CTXBAG, SHARED, FAILEDASSERT
-
-INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
-
-vars == << CTXBAG, SHARED, FAILEDASSERT >>
-
-Init == HarmonyInit
-
-{tla_instr_block}
-
-proc(self) == {instr_conjunction}
-
-Next == (\E self \in {{"c0", "c1"}}: proc(self))
-
-Spec == Init /\ [][Next]_vars
-
-=============================================================================
-"""
-
   output_module_name = os.path.basename(OUTPUT_TLA_FILE).split(".")[0]
   tla_instr_block = '\n'.join(tla_instr_lines)
+  instr_conjunction = " \/ ".join([f"pc{ii}(self)" for ii in range(len(tla_instr_lines))])
   with open(OUTPUT_TLA_FILE, "w") as f:
-    f.write(final_output_fmt.format(**locals()))
+    f.write(FINAL_OUTPUT_FMT.format(
+        output_module_name=output_module_name,
+        tla_instr_block=tla_instr_block,
+        instr_conjunction=instr_conjunction
+        ))
 
 
 if __name__ == "__main__":
@@ -150,5 +154,5 @@ if __name__ == "__main__":
 # TODO:
 #   - current contexts are hardcoded? (\E self \in {{"c0", "c1"}})
 #   - have this run the harmony compiler too?
-#   - Move final_output outside of main()
 #   - force harmony module to be imported somehow? or to exist in same file as output?
+#   - fix all the "*params" cruft
