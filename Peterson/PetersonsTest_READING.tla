@@ -1,20 +1,10 @@
---------------------------- MODULE PetersonsTest ---------------------------
-VARIABLE CTXBAG, SHARED, FAILEDASSERT
-
-INSTANCE Harmony WITH  CTXBAG <- CTXBAG, SHARED <- SHARED, FAILEDASSERT <- FAILEDASSERT
-
-vars == << CTXBAG, SHARED, FAILEDASSERT >>
-
-Init == HarmonyInit
-
-pc0(ctx) == /\ Frame(ctx, 0, <<"INIT">>)
-
-pc1(ctx) == /\ Push(ctx, 1, [F |-> "F", T |-> "F"])
+pc1(ctx) == /\ Push(ctx, 1, [F |-> "F", T |-> "F"])   pc0(ctx) == /\ Frame(ctx, 0, <<"INIT">>)
 pc2(ctx) == /\ Dummy(ctx, 2)  (* Sequential *)
-pc2(ctx) == /\ Store(ctx, 3, "flags")
-pc4(ctx) == /\ Dummy(ctx, 4)
+pc2(ctx) == /\ Store(ctx, 3, "flags")  (* ok this should be Push(flags), whats happening here?? *)
+pc4(ctx) == /\ Dummy(ctx, 4) (* Sequential *)
 
-pc3(ctx) == /\ \E x \in {"F", "T"} : Push(ctx, 7, x)
+
+pc3(ctx) == /\ \E x \in {"F", "T"} : Push(ctx, 7, x) (* why re ints becoming T/F?? *)
 pc4(ctx) == /\ Dummy(ctx, 8)  (* Choose *)
 pc5(ctx) == /\ Store(ctx, 9, "turn")
 
