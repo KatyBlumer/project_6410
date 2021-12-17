@@ -9,18 +9,18 @@ Init == HarmonyInit
 
 pc0(ctx) == /\ Frame(ctx, 0, <<"INIT">>)
 ----------- Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
-pc2(ctx) == /\ Dummy(ctx, 2)
+pc2(ctx) == /\ Dummy(ctx, 2)  (* Sequential *)
 ----------- Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'turn'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'turn'}]}}
-pc4(ctx) == /\ Dummy(ctx, 4)
+pc4(ctx) == /\ Dummy(ctx, 4)  (* Sequential *)
 ----------- Can't handle non-empty dict: [{'key': {'type': 'int', 'value': '0'}, 'value': {'type': 'bool', 'value': 'False'}}, {'key': {'type': 'int', 'value': '1'}, 'value': {'type': 'bool', 'value': 'False'}}] ----- {'op': 'Push', 'value': {'type': 'dict', 'value': [{'key': {'type': 'int', 'value': '0'}, 'value': {'type': 'bool', 'value': 'False'}}, {'key': {'type': 'int', 'value': '1'}, 'value': {'type': 'bool', 'value': 'False'}}]}}
 pc6(ctx) == /\ Store(ctx, 6, "flags")
 ----------- Cannot yet handle the Harmony type [set]: {'type': 'set', 'value': [{'type': 'int', 'value': '0'}, {'type': 'int', 'value': '1'}]} ----- {'op': 'Push', 'value': {'type': 'set', 'value': [{'type': 'int', 'value': '0'}, {'type': 'int', 'value': '1'}]}}
------------ Unrecognized instr_name: Choose ----- {'op': 'Choose'}
+pc8(ctx) == /\ Dummy(ctx, 8)  (* Choose *)
 pc9(ctx) == /\ Store(ctx, 9, "turn")
 pc10(ctx) == /\ Jump(ctx, 10, 66)
 pc11(ctx) == /\ Frame(ctx, 11, <<"self">>)
 ----------- Cannot yet handle the Harmony type [set]: {'type': 'set', 'value': [{'type': 'bool', 'value': 'False'}, {'type': 'bool', 'value': 'True'}]} ----- {'op': 'Push', 'value': {'type': 'set', 'value': [{'type': 'bool', 'value': 'False'}, {'type': 'bool', 'value': 'True'}]}}
------------ Unrecognized instr_name: Choose ----- {'op': 'Choose'}
+pc13(ctx) == /\ Dummy(ctx, 13)  (* Choose *)
 ----------- Unrecognized instr_name: JumpCond ----- {'op': 'JumpCond', 'pc': '64', 'cond': {'type': 'bool', 'value': 'False'}}
 ----------- Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
 pc16(ctx) == /\ LoadVar(ctx, 16, "self")
@@ -61,9 +61,9 @@ pc49(ctx) == /\ LoadVar(ctx, 49, "self")
 pc51(ctx) == /\ Push(ctx, 51, 1)
 ----------- Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
 ----------- Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
------------ Unrecognized instr_name: Assert ----- {'op': 'Assert'}
+pc54(ctx) == /\ Assert(ctx, 54)
 ----------- Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
------------ Unrecognized instr_name: ReadonlyDec ----- {'op': 'ReadonlyDec'}
+pc56(ctx) == /\ Dummy(ctx, 56)  (* ReadonlyDec *)
 ----------- Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
 ----------- Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
 pc59(ctx) == /\ LoadVar(ctx, 59, "self")

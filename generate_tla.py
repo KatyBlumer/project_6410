@@ -117,16 +117,20 @@ class InstrLoad(BaseInstr):
     return self.fmt_instr(
         BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"))
 
-@BaseInstr.register_subclass(["Return", "Spawn",
-                              "Dummy", "Sequential", "Choose"])
+@BaseInstr.register_subclass(["Return", "Spawn", "Assert"])
 class InstrNoArg(BaseInstr):
-  def __init__(self, pc, har_instr):
-    super(InstrNoArg, self).__init__(pc, har_instr)
-    if self.instr_name in ["Sequential", "Choose"]:
-      self.instr_name = "Dummy"
-
   def tla_instr(self):
     return self.fmt_instr()
+
+@BaseInstr.register_subclass(["Dummy", "Sequential", "Choose", "ReadonlyDec"])
+class InstrDummy(BaseInstr):
+  def __init__(self, pc, har_instr):
+    super(InstrDummy, self).__init__(pc, har_instr)
+    self.orig_instr_name = self.instr_name
+    self.instr_name = "Dummy"
+
+  def tla_instr(self):
+    return self.fmt_instr() + f"  (* {self.orig_instr_name} *)"
 
 
 def main():

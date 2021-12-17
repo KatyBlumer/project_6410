@@ -1,5 +1,4 @@
-    { "op": "Frame", "name": "__init__", "args": "()" },
-    { "op": "Push", "value": { "type": "address", "value": [{ "type": "atom", "value": "flags" }] } },
+{ "op": "Frame", "name": "__init__", "args": "()" }, { "op": "Push", "value": { "type": "address", "value": [{ "type": "atom", "value": "flags" }] } },
     { "op": "Sequential" },
     { "op": "Push", "value": { "type": "address", "value": [{ "type": "atom", "value": "turn" }] } },
     { "op": "Sequential" },
