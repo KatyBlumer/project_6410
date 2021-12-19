@@ -29,19 +29,19 @@ pc18(ctx) == /\ Push(ctx, 18, T)
 pc19(ctx) == /\ Store(ctx, 19, "")
 pc20(ctx) == /\ Push(ctx, 20, 1)
 pc21(ctx) == /\ LoadVar(ctx, 21, "self")
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
+----------- TODO-nary-[-] Unimplemented nary_type: - ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
 pc23(ctx) == /\ Store(ctx, 23, "turn")
 pc24(ctx) == /\ Push(ctx, 24, "flags")
 pc25(ctx) == /\ Push(ctx, 25, 1)
 pc26(ctx) == /\ LoadVar(ctx, 26, "self")
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
+----------- TODO-nary-[-] Unimplemented nary_type: - ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
 pc28(ctx) == /\ Dummy(ctx, 28)  (* Address *)
 pc29(ctx) == /\ Load(ctx, 29, "")
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'not'}
+pc30(ctx) == /\ NotOp(ctx, 30)
 pc31(ctx) == /\ JumpCond(ctx, 31, T, 36)
 pc32(ctx) == /\ Load(ctx, 32, "turn")
 pc33(ctx) == /\ LoadVar(ctx, 33, "self")
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
+pc34(ctx) == /\ EqOp(ctx, 34)
 pc35(ctx) == /\ Jump(ctx, 35, 37)
 pc36(ctx) == /\ Push(ctx, 36, T)
 pc37(ctx) == /\ JumpCond(ctx, 37, F, 24)
@@ -49,18 +49,18 @@ pc37(ctx) == /\ JumpCond(ctx, 37, F, 24)
 pc39(ctx) == /\ Dummy(ctx, 39)  (* ReadonlyInc *)
 ----------- TODO-inst-AtomicInc Unrecognized instr_name: AtomicInc ----- {'op': 'AtomicInc', 'lazy': 'True'}
 pc41(ctx) == /\ Push(ctx, 41, 38)
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'atLabel'}
+----------- TODO-nary-[atLabel] Unimplemented nary_type: atLabel ----- {'op': 'Nary', 'arity': 1, 'value': 'atLabel'}
 pc43(ctx) == /\ Push(ctx, 43, <<>>)
 pc44(ctx) == /\ Push(ctx, 44, <<>>)
 pc45(ctx) == /\ Push(ctx, 45, 0)
 pc46(ctx) == /\ Push(ctx, 46, 11)
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+----------- TODO-nary-[DictAdd] Unimplemented nary_type: DictAdd ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
 pc48(ctx) == /\ Push(ctx, 48, 1)
 pc49(ctx) == /\ LoadVar(ctx, 49, "self")
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+----------- TODO-nary-[DictAdd] Unimplemented nary_type: DictAdd ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
 pc51(ctx) == /\ Push(ctx, 51, 1)
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
------------ TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
+----------- TODO-nary-[DictAdd] Unimplemented nary_type: DictAdd ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+pc53(ctx) == /\ EqOp(ctx, 53)
 pc54(ctx) == /\ Assert(ctx, 54)
 ----------- TODO-inst-AtomicDec Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
 pc56(ctx) == /\ Dummy(ctx, 56)  (* ReadonlyDec *)

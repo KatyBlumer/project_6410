@@ -154,6 +154,24 @@ class InstrDummy(BaseInstr):
     return self.fmt_instr() + f"  (* {self.orig_instr_name} *)"
 
 
+@BaseInstr.register_subclass("Nary")
+class InstrNary(BaseInstr):
+  nary_types = {
+      "not": "NotOp",
+      "-": "TODO",  ## ?? I think we only use this as 1-<bool> so far but it should really be subtraction
+      "==": "EqOp",
+      "DictAdd": "TODO",
+      "atLabel": "TODO"
+  }
+  def tla_instr(self):
+    nary_type = self.har_instr["value"]
+    nary_opname = self.nary_types[nary_type]
+    if nary_opname == "TODO":
+      raise NotImplementedError(
+          f"TODO-nary-[{nary_type}] Unimplemented nary_type: {nary_type}")
+    self.instr_name = nary_opname
+    return self.fmt_instr()
+
 
 
 def main():
