@@ -8,68 +8,68 @@ vars == << CTXBAG, SHARED, FAILEDASSERT >>
 Init == HarmonyInit
 
 pc0(ctx) == /\ Frame(ctx, 0, <<"INIT">>)
------------ Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
+pc1(ctx) == /\ Push(ctx, 1, "flags")
 pc2(ctx) == /\ Dummy(ctx, 2)  (* Sequential *)
------------ Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'turn'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'turn'}]}}
+pc3(ctx) == /\ Push(ctx, 3, "turn")
 pc4(ctx) == /\ Dummy(ctx, 4)  (* Sequential *)
------------ Can't handle non-empty dict: [{'key': {'type': 'int', 'value': '0'}, 'value': {'type': 'bool', 'value': 'False'}}, {'key': {'type': 'int', 'value': '1'}, 'value': {'type': 'bool', 'value': 'False'}}] ----- {'op': 'Push', 'value': {'type': 'dict', 'value': [{'key': {'type': 'int', 'value': '0'}, 'value': {'type': 'bool', 'value': 'False'}}, {'key': {'type': 'int', 'value': '1'}, 'value': {'type': 'bool', 'value': 'False'}}]}}
+pc5(ctx) == /\ Push(ctx, 5, [0 -> F, 1 -> F])
 pc6(ctx) == /\ Store(ctx, 6, "flags")
------------ Cannot yet handle the Harmony type [set]: {'type': 'set', 'value': [{'type': 'int', 'value': '0'}, {'type': 'int', 'value': '1'}]} ----- {'op': 'Push', 'value': {'type': 'set', 'value': [{'type': 'int', 'value': '0'}, {'type': 'int', 'value': '1'}]}}
+pc7(ctx) == /\ Push(ctx, 7, {0, 1})
 pc8(ctx) == /\ Dummy(ctx, 8)  (* Choose *)
 pc9(ctx) == /\ Store(ctx, 9, "turn")
 pc10(ctx) == /\ Jump(ctx, 10, 66)
 pc11(ctx) == /\ Frame(ctx, 11, <<"self">>)
------------ Cannot yet handle the Harmony type [set]: {'type': 'set', 'value': [{'type': 'bool', 'value': 'False'}, {'type': 'bool', 'value': 'True'}]} ----- {'op': 'Push', 'value': {'type': 'set', 'value': [{'type': 'bool', 'value': 'False'}, {'type': 'bool', 'value': 'True'}]}}
+pc12(ctx) == /\ Push(ctx, 12, {F, T})
 pc13(ctx) == /\ Dummy(ctx, 13)  (* Choose *)
------------ Unrecognized instr_name: JumpCond ----- {'op': 'JumpCond', 'pc': '64', 'cond': {'type': 'bool', 'value': 'False'}}
------------ Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
+pc14(ctx) == /\ JumpCond(ctx, 14, F, 64)
+pc15(ctx) == /\ Push(ctx, 15, "flags")
 pc16(ctx) == /\ LoadVar(ctx, 16, "self")
------------ Unrecognized instr_name: Address ----- {'op': 'Address'}
-pc18(ctx) == /\ Push(ctx, 18, TRUE)
------------ 'value' ----- {'op': 'Store'}
+pc17(ctx) == /\ Dummy(ctx, 17)  (* Address *)
+pc18(ctx) == /\ Push(ctx, 18, T)
+pc19(ctx) == /\ Store(ctx, 19, "")
 pc20(ctx) == /\ Push(ctx, 20, 1)
 pc21(ctx) == /\ LoadVar(ctx, 21, "self")
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
 pc23(ctx) == /\ Store(ctx, 23, "turn")
------------ Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
+pc24(ctx) == /\ Push(ctx, 24, "flags")
 pc25(ctx) == /\ Push(ctx, 25, 1)
 pc26(ctx) == /\ LoadVar(ctx, 26, "self")
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
------------ Unrecognized instr_name: Address ----- {'op': 'Address'}
------------ 'value' ----- {'op': 'Load'}
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'not'}
------------ Unrecognized instr_name: JumpCond ----- {'op': 'JumpCond', 'pc': '36', 'cond': {'type': 'bool', 'value': 'True'}}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '-'}
+pc28(ctx) == /\ Dummy(ctx, 28)  (* Address *)
+pc29(ctx) == /\ Load(ctx, 29, "")
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'not'}
+pc31(ctx) == /\ JumpCond(ctx, 31, T, 36)
 pc32(ctx) == /\ Load(ctx, 32, "turn")
 pc33(ctx) == /\ LoadVar(ctx, 33, "self")
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
 pc35(ctx) == /\ Jump(ctx, 35, 37)
-pc36(ctx) == /\ Push(ctx, 36, TRUE)
------------ Unrecognized instr_name: JumpCond ----- {'op': 'JumpCond', 'pc': '24', 'cond': {'type': 'bool', 'value': 'False'}}
------------ Unrecognized instr_name: AtomicInc ----- {'op': 'AtomicInc', 'lazy': 'False'}
------------ Unrecognized instr_name: ReadonlyInc ----- {'op': 'ReadonlyInc'}
------------ Unrecognized instr_name: AtomicInc ----- {'op': 'AtomicInc', 'lazy': 'True'}
+pc36(ctx) == /\ Push(ctx, 36, T)
+pc37(ctx) == /\ JumpCond(ctx, 37, F, 24)
+----------- TODO-inst-AtomicInc Unrecognized instr_name: AtomicInc ----- {'op': 'AtomicInc', 'lazy': 'False'}
+pc39(ctx) == /\ Dummy(ctx, 39)  (* ReadonlyInc *)
+----------- TODO-inst-AtomicInc Unrecognized instr_name: AtomicInc ----- {'op': 'AtomicInc', 'lazy': 'True'}
 pc41(ctx) == /\ Push(ctx, 41, 38)
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'atLabel'}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 1, 'value': 'atLabel'}
 pc43(ctx) == /\ Push(ctx, 43, <<>>)
 pc44(ctx) == /\ Push(ctx, 44, <<>>)
 pc45(ctx) == /\ Push(ctx, 45, 0)
 pc46(ctx) == /\ Push(ctx, 46, 11)
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
 pc48(ctx) == /\ Push(ctx, 48, 1)
 pc49(ctx) == /\ LoadVar(ctx, 49, "self")
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
 pc51(ctx) == /\ Push(ctx, 51, 1)
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
------------ Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 3, 'value': 'DictAdd'}
+----------- TODO-inst-Nary Unrecognized instr_name: Nary ----- {'op': 'Nary', 'arity': 2, 'value': '=='}
 pc54(ctx) == /\ Assert(ctx, 54)
------------ Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
+----------- TODO-inst-AtomicDec Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
 pc56(ctx) == /\ Dummy(ctx, 56)  (* ReadonlyDec *)
------------ Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
------------ Cannot yet handle the Harmony type [address]: {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]} ----- {'op': 'Push', 'value': {'type': 'address', 'value': [{'type': 'atom', 'value': 'flags'}]}}
+----------- TODO-inst-AtomicDec Unrecognized instr_name: AtomicDec ----- {'op': 'AtomicDec'}
+pc58(ctx) == /\ Push(ctx, 58, "flags")
 pc59(ctx) == /\ LoadVar(ctx, 59, "self")
------------ Unrecognized instr_name: Address ----- {'op': 'Address'}
-pc61(ctx) == /\ Push(ctx, 61, FALSE)
------------ 'value' ----- {'op': 'Store'}
+pc60(ctx) == /\ Dummy(ctx, 60)  (* Address *)
+pc61(ctx) == /\ Push(ctx, 61, F)
+pc62(ctx) == /\ Store(ctx, 62, "")
 pc63(ctx) == /\ Jump(ctx, 63, 12)
 pc64(ctx) == /\ DelVar(ctx, 64, "self")
 pc65(ctx) == /\ Return(ctx, 65)

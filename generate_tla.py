@@ -45,7 +45,7 @@ class BaseInstr(object):
   @classmethod
   def create(cls, instr_name, *params):
     if instr_name not in cls.subclasses:
-      raise ValueError("Unrecognized instr_name: {}".format(instr_name))
+      raise ValueError(f"TODO-inst-{instr_name} Unrecognized instr_name: {instr_name}")
     return cls.subclasses[instr_name](*params)
 
   @staticmethod
@@ -56,14 +56,13 @@ class BaseInstr(object):
   def har_to_tla_val(val_json, required_type=None):
     if isinstance(val_json, list):
       if (len(val_json) > 1):
-        print(val_json)
         raise NotImplementedError(f"Cannot yet handle multiple values (len {len(val_json)}): {val_json}")
       val_json = val_json[0]
     har_type, har_val = val_json["type"], val_json["value"]
     if (required_type is not None) and (har_type != required_type):
       raise ValueError(f"Harmony value type [{har_type}] is not of required type [{required_type}]")
     if har_type == "bool":
-      har_val = har_val.upper()
+      har_val = har_val[0].upper()
     elif har_type == "atom":
       har_val = BaseInstr.tla_quotes(har_val)
     elif har_type in ["int", "pc"]:
@@ -72,7 +71,19 @@ class BaseInstr(object):
       if not har_val:
         har_val = "<<>>"
       else:
-        raise NotImplementedError(f"Can't handle non-empty dict: {har_val}")
+        elem_strings = []
+        for elem_json in har_val:
+          elem_key = BaseInstr.har_to_tla_val(elem_json["key"])
+          elem_val = BaseInstr.har_to_tla_val(elem_json["value"])
+          elem_strings.append(f"{elem_key} -> {elem_val}")
+        har_val = f"[{', '.join(elem_strings)}]"
+    elif har_type == "set":
+      elem_strings = []
+      for elem_json in har_val:
+        elem_strings.append(BaseInstr.har_to_tla_val(elem_json))
+      har_val = "{" + ', '.join(elem_strings) + "}"
+    elif har_type == "address":
+      har_val = BaseInstr.har_to_tla_val(har_val, required_type="atom")
     else:
       raise NotImplementedError(f"Cannot yet handle the Harmony type [{har_type}]: {val_json}")
 
@@ -96,7 +107,7 @@ class InstrFrame(BaseInstr):
       arg = "INIT"
     return self.fmt_instr(f"<<{self.tla_quotes(arg)}>>")
 
-@BaseInstr.register_subclass(["Push", "Store"])
+@BaseInstr.register_subclass(["Push"])
 class InstrHandleVal(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(BaseInstr.har_to_tla_val(self.har_instr["value"]))
@@ -111,18 +122,28 @@ class InstrHandleStr(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr(self.tla_quotes(self.har_instr["value"]))
 
-@BaseInstr.register_subclass("Load")
+@BaseInstr.register_subclass(["Load", "Store"])
 class InstrLoad(BaseInstr):
   def tla_instr(self):
+    var_name = (BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom")
+                if "value" in self.har_instr
+                else self.tla_quotes(""))
+    return self.fmt_instr(var_name)
+
+@BaseInstr.register_subclass("JumpCond")
+class InstrJumpCond(BaseInstr):
+  def tla_instr(self):
     return self.fmt_instr(
-        BaseInstr.har_to_tla_val(self.har_instr["value"], required_type="atom"))
+        BaseInstr.har_to_tla_val(self.har_instr["cond"], required_type="bool"),
+        self.har_instr["pc"])
 
 @BaseInstr.register_subclass(["Return", "Spawn", "Assert"])
 class InstrNoArg(BaseInstr):
   def tla_instr(self):
     return self.fmt_instr()
 
-@BaseInstr.register_subclass(["Dummy", "Sequential", "Choose", "ReadonlyDec"])
+@BaseInstr.register_subclass(["Sequential", "Choose", "ReadonlyInc",
+                              "ReadonlyDec", "Address"])
 class InstrDummy(BaseInstr):
   def __init__(self, pc, har_instr):
     super(InstrDummy, self).__init__(pc, har_instr)
@@ -131,6 +152,8 @@ class InstrDummy(BaseInstr):
 
   def tla_instr(self):
     return self.fmt_instr() + f"  (* {self.orig_instr_name} *)"
+
+
 
 
 def main():
@@ -148,7 +171,10 @@ def main():
     try:
       tla_instr_lines.append(BaseInstr.create(instr["op"], *(ii, instr)).tla_instr())
     except Exception as e:
-      tla_instr_lines.append(f"----------- {e} ----- {instr}")
+      if str(e).startswith("TODO-"):
+        tla_instr_lines.append(f"----------- {e} ----- {instr}")
+      else:
+        tla_instr_lines.append(f"----- {repr(e)} ----- {instr}")
 
   output_module_name = os.path.basename(OUTPUT_TLA_FILE).split(".")[0]
   tla_instr_block = '\n'.join(tla_instr_lines)
